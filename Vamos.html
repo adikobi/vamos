@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>¡Vamos! · ספרדית לדוברי עברית</title>
+<meta name="description" content="לומדים ספרדית מעברית: רצפים, לבבות, רמזים ובניית משפטים.">
+<meta name="theme-color" content="#F2E8D5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23C8341D'/%3E%3Ctext x='16' y='24' font-size='22' font-weight='900' text-anchor='middle' fill='%23F2E8D5' font-family='sans-serif'%3E¡%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--g:#F2E8D5;--t:#E7DAC0;--i:#1A1410;--a:#C8341D;--e:cubic-bezier(.2,.8,.2,1);padding-top:env(safe-area-inset-top)}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--g);color:var(--i);font:400 18px/1.5 'Bricolage Grotesque','Heebo',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--a);outline-offset:3px}
+[lang=es]{direction:ltr;unicode-bidi:isolate}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 20px calc(60px + env(safe-area-inset-bottom))}
+.view{display:none}.view.on{display:block}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800}
+.logo{font-size:26px;letter-spacing:-.03em}
+.hs{display:flex;gap:12px;align-items:center}
+#hh,#hr{font-weight:800;color:var(--a);direction:ltr;white-space:nowrap}
+.lv{background:var(--i);color:var(--g);padding:4px 14px;font-size:15px;font-weight:700}
+.hero{padding:clamp(40px,8vw,90px) 0 clamp(40px,8vw,90px);display:grid;gap:8px}
+.streak{font-size:clamp(8rem,34vw,20rem);line-height:.78;font-weight:800;letter-spacing:-.07em;color:var(--a);font-variant-numeric:tabular-nums;animation:rise .8s var(--e) both}
+.hero h1{font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.1;letter-spacing:-.02em;font-weight:800;margin-top:18px}
+.hero h1 span{display:block;font-weight:500;opacity:.75;font-size:.6em;margin-top:6px}
+.goal{margin-top:30px;max-width:520px}
+.goal p{display:flex;justify-content:space-between;font-weight:700;margin-bottom:8px}
+.bar{height:10px;background:var(--t);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--i);transition:width .9s var(--e)}
+#gb{background:var(--a)}
+.bd{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 70px}
+.bd span{padding:10px 16px;background:var(--t);font-weight:800;opacity:.45;line-height:1.1}
+.bd span.on{background:var(--i);color:var(--g);opacity:1}
+.bd small{display:block;font-weight:500;font-size:11px}
+.h2{font-size:15px;font-weight:700;letter-spacing:.04em;margin-bottom:6px}
+.sec{margin-top:44px}
+.row{display:grid;grid-template-columns:auto 1fr minmax(90px,200px);gap:clamp(14px,4vw,40px);align-items:center;width:100%;text-align:start;padding:24px 0;border-top:2px solid var(--i);transition:padding .35s var(--e),background .35s;animation:rise .6s var(--e) both}
+.row:hover{padding-inline:18px;background:var(--t)}
+.row:active{transform:scale(.99)}
+.row.lk{opacity:.35;pointer-events:none}
+.row.cur b{color:var(--a)}
+.row b{font-size:clamp(2.4rem,7vw,5rem);line-height:.9;font-weight:800;letter-spacing:-.05em;min-width:1.6em}
+.row h3{font-size:clamp(1.4rem,3.4vw,2.4rem);line-height:1.05;letter-spacing:-.02em;font-weight:800}
+.row h3 small{display:block;font-size:.5em;font-weight:500;opacity:.7;margin-top:6px;letter-spacing:0}
+.row em{font-style:normal;font-weight:700;font-size:14px;display:block;margin-bottom:6px;text-align:end;direction:ltr}
+.foot{margin-top:70px;border-top:2px solid var(--i);padding-top:20px;display:flex;justify-content:space-between;font-size:14px;align-items:center}
+.foot button{text-decoration:underline;font-size:14px}
+.mega{font-size:clamp(4rem,22vw,17rem);line-height:.8;font-weight:800;letter-spacing:-.06em;margin-top:10px;direction:ltr;text-align:center;user-select:none}
+#lesson{position:fixed;inset:0;background:var(--g);z-index:10;overflow:auto;padding-bottom:180px}
+#lesson .wrap{max-width:760px;min-height:100vh;display:flex;flex-direction:column}
+.lt{display:flex;gap:14px;align-items:center;padding-top:6px}
+.x{font-size:34px;line-height:1;width:44px;height:44px;transition:transform .25s}
+.x:hover{transform:rotate(90deg)}
+.lt .bar{flex:1;height:14px}
+.lt .bar i{background:var(--a);transition:width .5s var(--e)}
+.cmb{min-width:44px;font-weight:800;font-size:22px;direction:ltr;text-align:end}
+.cmb.pop{animation:pop .4s var(--e)}
+.q{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:30px 0;animation:rise .45s var(--e) both}
+.cap{font-weight:700;font-size:15px;letter-spacing:.04em}
+.big{font-size:clamp(2.6rem,10vw,5.5rem);line-height:.95;letter-spacing:-.04em;font-weight:800;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.big.sm{font-size:clamp(1.9rem,6.5vw,3.2rem);line-height:1.05}
+.spk{width:64px;height:64px;background:var(--i);color:var(--g);font-size:22px;flex:none;transition:transform .2s var(--e),background .2s}
+.spk:hover{background:var(--a);transform:scale(1.08)}
+.spk:active{transform:scale(.94)}
+.spk.big2{width:120px;height:120px;font-size:44px}
+.spk.sm{width:44px;height:44px;font-size:16px;background:var(--g);color:var(--i)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.opt{background:var(--t);padding:22px 16px;font-size:clamp(1.15rem,3.4vw,1.6rem);font-weight:700;display:flex;gap:12px;align-items:center;text-align:start;min-height:84px;transition:transform .2s var(--e),background .2s,color .2s,opacity .3s}
+.opt:hover:not(:disabled){transform:translateY(-3px);background:#DFCFAE}
+.opt:active:not(:disabled){transform:scale(.97)}
+.opt kbd{font:700 12px 'Heebo';border:2px solid currentColor;min-width:24px;height:24px;display:grid;place-items:center;opacity:.55;flex:none}
+.opt.ok{background:var(--i);color:var(--g);animation:pop .4s var(--e)}
+.opt.no{background:var(--a);color:#fff;animation:shake .4s}
+.opt.gone{opacity:.18}.opt.sel{outline:3px solid var(--a)}.sub:disabled{opacity:.35;cursor:default}
+.opt:disabled{cursor:default}
+.inp{width:100%;margin-top:18px;padding:20px 16px;font-size:clamp(1.6rem,6vw,2.6rem);font-weight:700;border:0;border-bottom:4px solid var(--i);background:var(--t);direction:ltr;text-align:start}
+.inp:focus{outline:0;border-color:var(--a)}
+.inp.ok{background:var(--i);color:var(--g)}.inp.no{background:var(--a);color:#fff;animation:shake .4s}
+.sub{display:block;width:100%;margin-top:14px;padding:20px;background:var(--i);color:var(--g);font-weight:800;font-size:20px;transition:background .2s,transform .2s}
+.sub:hover{background:var(--a)}.sub:active{transform:scale(.98)}
+.ans{min-height:76px;border-bottom:3px solid var(--i);margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;padding-bottom:8px}
+.ans.ok .tk{background:var(--i);color:var(--g)}.ans.no{animation:shake .4s}.ans.no .tk{background:var(--a);color:#fff}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;min-height:60px}
+.tk{padding:12px 18px;background:var(--t);font-weight:700;font-size:clamp(1.1rem,3.4vw,1.4rem);border-bottom:3px solid var(--i);transition:transform .15s var(--e),opacity .2s;animation:pop .25s var(--e)}
+.tk:hover:not(:disabled){transform:translateY(-2px)}.tk:disabled{opacity:.25;cursor:default}
+.hl{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.hl button{padding:12px 18px;background:var(--t);font-weight:700;font-size:15px;transition:background .2s,color .2s}
+.hl button:hover:not(:disabled){background:var(--i);color:var(--g)}.hl button:disabled{opacity:.4}
+.hn{display:none;gap:14px;align-items:center;justify-content:space-between;background:var(--i);color:var(--g);padding:14px 18px;margin-top:10px;font-size:16px;line-height:1.4;animation:rise .35s var(--e)}
+.hn:not(:empty){display:flex}
+#fb{position:fixed;inset:auto 0 0 0;z-index:12;transform:translateY(110%);transition:transform .45s var(--e);padding:22px 20px calc(22px + env(safe-area-inset-bottom))}
+#fb.s{transform:none}
+#fb.ok{background:var(--i);color:var(--g)}
+#fb.no{background:var(--a);color:#fff}
+#fb.sk{background:var(--t);color:var(--i)}
+#fb div{max-width:760px;margin:0 auto;display:flex;gap:20px;justify-content:space-between;align-items:center}
+#fb h4{font-size:clamp(1.4rem,4vw,2rem);line-height:1.1;letter-spacing:-.02em;font-weight:800}
+#fb p{opacity:.92;font-size:17px}
+#fb button{background:var(--g);color:var(--i);padding:16px 32px;font-weight:800;font-size:18px;transition:transform .2s}
+#fb.sk button{background:var(--i);color:var(--g)}
+#fb button:hover{transform:scale(1.05)}
+#fb .bt{display:flex;gap:10px;flex:none}
+#fs{padding:16px 22px!important}
+.pts{position:fixed;top:90px;inset-inline:0;text-align:center;font-weight:800;font-size:44px;color:var(--a);pointer-events:none;z-index:13;animation:fly 1s var(--e) forwards;direction:ltr}
+#res .wrap{max-width:760px;padding-top:50px}
+#res canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+.stars{font-size:54px;letter-spacing:8px;color:var(--a);direction:ltr}
+.stars s{text-decoration:none;opacity:.2}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.stats div{background:var(--t);padding:18px}
+.stats b{display:block;font-size:clamp(2rem,8vw,3.6rem);line-height:1;letter-spacing:-.04em;font-weight:800;direction:ltr;text-align:start}
+.stats span{font-size:14px;font-weight:700}
+.miss{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 26px}
+.miss span{background:var(--i);color:var(--g);padding:8px 14px;font-weight:700}
+.nw{background:var(--a);color:#fff;padding:12px 16px;font-weight:800;margin-bottom:10px;animation:rise .5s var(--e) both}
+.act{display:flex;gap:12px;flex-wrap:wrap}
+.act button{padding:18px 30px;font-weight:800;font-size:18px;background:var(--i);color:var(--g);transition:background .2s,transform .2s}
+.act button:hover{background:var(--a)}.act button:active{transform:scale(.97)}
+.act .alt{background:var(--t);color:var(--i)}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+@keyframes pop{50%{transform:scale(1.07)}}
+@keyframes shake{20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(5px)}}
+@keyframes fly{from{opacity:1;transform:translateY(10px) scale(.7)}30%{transform:translateY(0) scale(1.1)}to{opacity:0;transform:translateY(-70px)}}
+@media(max-width:560px){.row{grid-template-columns:auto 1fr}.row div:last-child{grid-column:1/-1}.opts{grid-template-columns:1fr}.opt{min-height:66px;padding:14px 16px}#fb div{flex-direction:column;align-items:stretch;gap:12px}#fb .bt button{flex:1}#fs{flex:none!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main id="home" class="view on"><div class="wrap">
+  <div class="top"><span class="logo" lang="es">¡Vamos!</span><span class="hs"><span id="hh"></span><span class="lv" id="lv"></span></span></div>
+  <section class="hero">
+    <div class="streak" id="sk">0</div>
+    <h1 id="skt"></h1>
+    <div class="goal"><p><span>יעד יומי</span><span id="gt" dir="ltr"></span></p><div class="bar"><i id="gb"></i></div></div>
+    <div class="goal"><p><span id="lvt"></span><span id="lvx" dir="ltr"></span></p><div class="bar"><i id="lvb"></i></div></div>
+  </section>
+  <p class="h2">תגי רמה</p>
+  <div class="bd" id="bd"></div>
+  <button class="sub" id="pr" style="margin:0 0 40px" disabled>★ תרגול חכם · חזרה על המילים החלשות שלכם</button><p class="h2">מסלול הלימוד</p>
+  <div id="units"></div>
+  <div class="foot"><span id="tot"></span><button id="rst">איפוס התקדמות</button></div>
+  <div class="mega" lang="es" aria-hidden="true">¡Vamos!</div>
+</div></main>
+
+<main id="lesson" class="view" aria-live="polite"><div class="wrap">
+  <div class="lt"><button class="x" id="cls" aria-label="יציאה">×</button><div class="bar"><i id="pb"></i></div><span id="hr"></span><div class="cmb" id="cmb"></div></div>
+  <div class="q" id="q"></div>
+</div></main>
+<div id="fb" role="status"><div><section><h4 id="fh"></h4><p id="fp"></p></section><span class="bt"><button id="fs" aria-label="השמעה">▶</button><button id="fn">המשך</button></span></div></div>
+
+<main id="res" class="view"><div class="wrap">
+  <p class="cap" id="rn"></p>
+  <h1 class="big" id="rh" style="margin:6px 0 14px"></h1>
+  <div class="stars" id="rs" aria-hidden="true"></div>
+  <div class="stats"><div><b id="rx">0</b><span>נקודות</span></div><div><b id="rp">0</b><span>דיוק</span></div><div><b id="rk">0</b><span>רצף ימים</span></div></div>
+  <div id="rm"></div>
+  <div class="act"><button id="ra">שוב</button><button class="alt" id="rb">לדף הבית</button></div>
+  <canvas id="cv" aria-hidden="true"></canvas>
+</div></main>
+
+<script>
+/* [שם עברי, שם ספרדי, כלל דקדוק, מילים es|he, משפטים es|he] */
+const D=[
+['שלום ונימוסים','Saludos','¿Cómo estás? פנייה לא רשמית (אתה). רשמי: ¿cómo está usted?','hola|שלום;adiós|להתראות;gracias|תודה;por favor|בבקשה;buenos días|בוקר טוב;lo siento|סליחה;buenas noches|לילה טוב;buenas tardes|אחר צהריים טובים;hasta luego|להתראות בקרוב;de nada|על לא דבר;perdón|סליחה;con permiso|בהיתר','hola cómo estás|שלום מה שלומך;muchas gracias amigo|תודה רבה חבר;buenas noches señora|לילה טוב גברת;hasta luego mis amigos|להתראות חברים שלי'],
+['הצגה עצמית','Presentarse','me llamo = קוראים לי · soy de = אני מ… · tengo X años = יש לי X שנים','yo|אני;tú|אתה;me llamo|קוראים לי;soy de|אני מ;mucho gusto|נעים מאוד;años|שנים;ella|היא;él|הוא;nosotros|אנחנו;vivo en|אני גר ב;cómo te llamas|איך קוראים לך','me llamo Dan y soy de Israel|קוראים לי דן ואני מישראל;tengo veinte años|יש לי עשרים שנה;ella vive en Madrid|היא גרה במדריד;cómo te llamas tú|איך קוראים לך'],
+['מספרים','Números','uno הופך ל-un לפני שם עצם זכר: un libro. 11–15 מסתיימים ב-ce','uno|אחד;dos|שניים;tres|שלוש;cuatro|ארבע;cinco|חמש;diez|עשר;seis|שש;siete|שבע;ocho|שמונה;nueve|תשע;veinte|עשרים;cien|מאה','tengo tres hermanos|יש לי שלושה אחים;son las cinco|השעה חמש;tengo veinte euros|יש לי עשרים יורו;son las ocho|השעה שמונה'],
+['משפחה','Familia','mi/mis = שלי: mi madre, mis padres. סיומת -o לרוב זכר, -a נקבה','madre|אמא;padre|אבא;hermano|אח;hermana|אחות;abuelo|סבא;hijo|בן;tío|דוד;tía|דודה;abuela|סבתא;hija|בת;primo|בן דוד;esposo|בעל','mi madre es profesora|אמא שלי מורה;tengo una hermana|יש לי אחות;mi abuela cocina bien|סבתא שלי מבשלת טוב;mi tío vive en España|הדוד שלי גר בספרד'],
+['שם עצם ומין','Artículos','el = זכר, la = נקבה, los/las = רבים. un/una = לא מיודע','el libro|הספר;la casa|הבית;los niños|הילדים;las mesas|השולחנות;un perro|כלב;una gata|חתולה;el gato|החתול;la mujer|האישה;el hombre|האיש;los libros|הספרים;la ciudad|העיר;un amigo|חבר','la casa es grande|הבית גדול;el perro come|הכלב אוכל;el hombre tiene un gato|לאיש יש חתול;las niñas leen los libros|הילדות קוראות את הספרים'],
+['אוכל ושתייה','Comida','tengo hambre = אני רעב (עם tener, לא ser). me gusta = אני אוהב','agua|מים;pan|לחם;queso|גבינה;manzana|תפוח;pollo|עוף;arroz|אורז;leche|חלב;huevo|ביצה;carne|בשר;pescado|דג;fruta|פרי;sopa|מרק;café|קפה','quiero agua y pan|אני רוצה מים ולחם;me gusta el queso|אני אוהב את הגבינה;bebo café por la mañana|אני שותה קפה בבוקר;la sopa está caliente|המרק חם'],
+['להזמין במסעדה','Restaurante','quisiera = הייתי רוצה (מנומס). la cuenta = החשבון','la carta|התפריט;la cuenta|החשבון;quisiera|הייתי רוצה;una mesa|שולחן;para llevar|לקחת;delicioso|טעים;propina|טיפ;camarero|מלצר;vino|יין;postre|קינוח;plato|מנה','quisiera una mesa para dos|הייתי רוצה שולחן לשניים;la cuenta por favor|החשבון בבקשה;el camarero trae la carta|המלצר מביא את התפריט;quisiera un postre|הייתי רוצה קינוח'],
+['פעלים בהווה','Verbos -ar','hablar: hablo, hablas, habla, hablamos, habláis, hablan. מורידים -ar ומוסיפים סיומת','hablar|לדבר;comprar|לקנות;trabajar|לעבוד;caminar|ללכת ברגל;estudiar|ללמוד;cantar|לשיר;bailar|לרקוד;llamar|להתקשר;necesitar|להזדקק;esperar|לחכות;tomar|לקחת;viajar|לטייל','yo hablo español|אני מדבר ספרדית;nosotros estudiamos mucho|אנחנו לומדים הרבה;ellos bailan mucho|הם רוקדים הרבה;espero el tren|אני מחכה לרכבת'],
+['ser ו-estar','Ser y estar','ser = זהות ותכונה קבועה. estar = מצב זמני ומיקום','ser|להיות (קבוע);estar|להיות (מצב או מקום);soy|אני (קבוע);estoy|אני נמצא;es|הוא או היא;está|הוא נמצא;eres|אתה (קבוע);estás|אתה נמצא;somos|אנחנו (קבוע);estamos|אנחנו נמצאים;feliz|שמח;cansado|עייף','yo estoy cansado|אני עייף;ella es doctora|היא רופאה;tú eres mi amigo|אתה החבר שלי;estamos en casa|אנחנו בבית'],
+['צבעים ותיאור','Colores','התואר בא אחרי שם העצם ומתאים לו במין וביחס למספר: casa blanca, casas blancas','rojo|אדום;azul|כחול;verde|ירוק;blanco|לבן;grande|גדול;pequeño|קטן;amarillo|צהוב;negro|שחור;naranja|כתום;bonito|יפה;nuevo|חדש;viejo|ישן','la casa es blanca|הבית לבן;tengo un coche rojo|יש לי מכונית אדומה;el coche es nuevo|המכונית חדשה;tengo una camisa negra|יש לי חולצה שחורה'],
+['לשאול כיוונים','Direcciones','¿dónde está…? = איפה נמצא… · gire = פנה (רשמי)','a la derecha|ימינה;a la izquierda|שמאלה;todo recto|ישר;cerca|קרוב;lejos|רחוק;la esquina|הפינה;calle|רחוב;plaza|כיכר;puente|גשר;norte|צפון;sur|דרום;aquí|כאן','gire a la derecha|פנה ימינה;el hotel está cerca|המלון קרוב;la plaza está lejos|הכיכר רחוקה;gire en la calle|פנה ברחוב'],
+['נסיעות','Viaje','billete בספרד, boleto באמריקה הלטינית. necesito = אני צריך','aeropuerto|שדה תעופה;hotel|מלון;playa|חוף ים;billete|כרטיס;tren|רכבת;mapa|מפה;maleta|מזוודה;pasaporte|דרכון;autobús|אוטובוס;vuelo|טיסה;coche|מכונית','necesito un billete de tren|אני צריך כרטיס רכבת;dónde está el aeropuerto|איפה שדה התעופה;el vuelo sale hoy|הטיסה יוצאת היום;mi maleta es azul|המזוודה שלי כחולה'],
+['ימים וזמן','Tiempo','ימות השבוע בספרדית באות קטנה, בזכר: el lunes. voy a = אני הולך ל…','lunes|יום שני;martes|יום שלישי;hoy|היום;mañana|מחר;ayer|אתמול;semana|שבוע;miércoles|יום רביעי;viernes|יום שישי;domingo|יום ראשון;año|שנה;mes|חודש;día|יום','hoy es lunes|היום יום שני;mañana voy a la playa|מחר אני הולך לחוף;el domingo descanso|ביום ראשון אני נח;un año tiene doce meses|בשנה יש שנים עשר חודשים'],
+['קניות','Compras','¿cuánto cuesta? = כמה זה עולה? esta/este = הזאת/הזה','caro|יקר;barato|זול;dinero|כסף;tienda|חנות;cuánto cuesta|כמה זה עולה;tarjeta|כרטיס אשראי;pagar|לשלם;efectivo|מזומן;precio|מחיר;rebajas|מבצעים;camisa|חולצה;zapatos|נעליים','cuánto cuesta esta camisa|כמה עולה החולצה הזאת;es muy barato|זה מאוד זול;pago con tarjeta|אני משלם בכרטיס;los zapatos son caros|הנעליים יקרות'],
+['חירום','Emergencias','llame a… = תתקשר ל… (רשמי). ¡Socorro! ו-¡Ayuda! = הצילו','ayuda|עזרה;socorro|הצילו;policía|משטרה;ambulancia|אמבולנס;peligro|סכנה;rápido|מהר;fuego|אש;ladrón|גנב;herido|פצוע;urgente|דחוף;cuidado|זהירות;salida|יציאה','llame a la policía|תתקשר למשטרה;necesito ayuda rápido|אני צריך עזרה מהר;hay fuego|יש אש;es urgente|זה דחוף'],
+['בריאות','Salud','me duele + איבר = כואב לי…: me duele la cabeza','médico|רופא;medicina|תרופה;cabeza|ראש;estómago|בטן;fiebre|חום;hospital|בית חולים;dolor|כאב;garganta|גרון;espalda|גב;mano|יד;pie|רגל;enfermo|חולה','me duele la cabeza|כואב לי הראש;necesito un médico|אני צריך רופא;me duele la espalda|כואב לי הגב;mi hijo está enfermo|הבן שלי חולה'],
+['פעלים -er ו-ir','Verbos -er/-ir','-er: como, comes, come · -ir: vivo, vives, vive. ההבדל בין הקבוצות קטן','comer|לאכול;beber|לשתות;vivir|לגור;escribir|לכתוב;leer|לקרוא;abrir|לפתוח;correr|לרוץ;aprender|ללמוד;vender|למכור;recibir|לקבל;decidir|להחליט;subir|לעלות','yo como pan|אני אוכל לחם;ellos viven en Madrid|הם גרים במדריד;ella lee un libro|היא קוראת ספר;aprendo español|אני לומד ספרדית;ella vende pan|היא מוכרת לחם'],
+['tener ו-ir','Tener e ir','tengo, tienes, tiene = יש לי, לך, לו · voy, vas, va = אני, אתה, הוא הולך. ir a + פועל = עתיד קרוב','tengo|יש לי;tienes|יש לך;tiene|יש לו;voy|אני הולך;vas|אתה הולך;vamos|אנחנו הולכים;tenemos|יש לנו;tienen|יש להם;van|הם הולכים;va|הוא הולך;tengo que|אני חייב','tengo un perro|יש לי כלב;voy a la tienda|אני הולך לחנות;tú tienes mucho trabajo|יש לך הרבה עבודה;ellos van a la playa|הם הולכים לחוף;tenemos que trabajar|אנחנו חייבים לעבוד'],
+['מילות שאלה','Preguntas','לכל מילת שאלה יש הדגשה: qué, quién, dónde. שאלה נפתחת ב-¿ ונסגרת ב-?','qué|מה;quién|מי;dónde|איפה;cuándo|מתי;por qué|למה;cómo|איך;cuál|איזה;cuánto|כמה;cuántos|כמה (ברבים);para qué|בשביל מה;adónde|לאן;con quién|עם מי','qué quieres comer|מה אתה רוצה לאכול;dónde vives tú|איפה אתה גר;cuándo es la fiesta|מתי המסיבה;cuál es tu nombre|מה השם שלך;adónde vas|לאן אתה הולך'],
+['הבית','La casa','estar + מיקום: la cocina está aquí. התואר מתאים לשם העצם: la puerta blanca','cocina|מטבח;baño|שירותים;dormitorio|חדר שינה;ventana|חלון;puerta|דלת;sofá|ספה;cama|מיטה;mesa|שולחן;silla|כיסא;jardín|גינה;salón|סלון;techo|תקרה','la cocina es pequeña|המטבח קטן;abro la ventana|אני פותח את החלון;el baño está aquí|השירותים נמצאים כאן;la cama es grande|המיטה גדולה;mi jardín es bonito|הגינה שלי יפה'],
+['שגרת יום','Rutina','siempre = תמיד · nunca = אף פעם. המילה באה לפני הפועל','siempre|תמיד;nunca|אף פעם;desayuno|ארוחת בוקר;trabajo|עבודה;noche|לילה;dormir|לישון;despertarse|להתעורר;ducharse|להתקלח;temprano|מוקדם;tarde|מאוחר;después|אחר כך;antes|לפני','siempre desayuno temprano|אני תמיד אוכל ארוחת בוקר מוקדם;trabajo por la mañana|אני עובד בבוקר;nunca duermo tarde|אני אף פעם לא ישן מאוחר;me despierto temprano|אני מתעורר מוקדם;después trabajo|אחר כך אני עובד'],
+['מזג אוויר','El clima','hace + שם עצם: hace calor, hace frío, hace sol. גשם: llueve','calor|חום (בחוץ);frío|קור;lluvia|גשם;sol|שמש;viento|רוח;nieve|שלג;nube|ענן;tormenta|סערה;primavera|אביב;verano|קיץ;otoño|סתיו;invierno|חורף','hoy hace calor|היום חם;me gusta la lluvia|אני אוהב את הגשם;mañana hace sol|מחר שמשי;en verano hace calor|בקיץ חם;en invierno llueve mucho|בחורף יורד הרבה גשם'],
+['עבר פשוט','Pasado','סיומות עבר: -é, -aste, -ó (hablé, hablaste, habló). fui = הלכתי וגם הייתי','comí|אכלתי;fui|הלכתי;hablé|דיברתי;vi|ראיתי;compré|קניתי;tuve|היה לי;bebí|שתיתי;escribí|כתבתי;salí|יצאתי;llegué|הגעתי;estuve|הייתי (במקום);hizo|הוא עשה','ayer compré pan|אתמול קניתי לחם;fui a la playa|הלכתי לחוף;vi a mi abuelo|ראיתי את סבא שלי;ayer llegué tarde|אתמול הגעתי מאוחר;salí con mis amigos|יצאתי עם החברים שלי'],
+['דעות והעדפות','Opiniones','prefiero = אני מעדיף · creo que = אני חושב ש · porque = כי','prefiero|אני מעדיף;creo que|אני חושב ש;también|גם;pero|אבל;porque|כי;quizás|אולי;claro|ברור;seguro|בטוח;difícil|קשה;fácil|קל;importante|חשוב;depende|תלוי','prefiero el té|אני מעדיף תה;creo que es verdad|אני חושב שזה נכון;me gusta pero es caro|אני אוהב אבל זה יקר;es muy fácil|זה מאוד קל;claro que sí|ברור שכן'],
+['עבודה','Trabajo','trabajar en = לעבוד ב… · trabajar como = לעבוד בתור. jefe, profesor: אותו צורה לזכר','oficina|משרד;jefe|בוס;reunión|פגישה;empleo|משרה;sueldo|משכורת;empresa|חברה;ordenador|מחשב;correo|דואר אלקטרוני','tengo una reunión hoy|יש לי פגישה היום;mi jefe es amable|הבוס שלי נחמד;trabajo en una empresa|אני עובד בחברה'],
+['לימודים','Estudios','saber = לדעת עובדה · conocer = להכיר אדם או מקום','escuela|בית ספר;profesor|מורה;examen|מבחן;clase|שיעור;pregunta|שאלה;respuesta|תשובה;tarea|שיעורי בית;universidad|אוניברסיטה','tengo un examen mañana|יש לי מבחן מחר;la profesora explica la clase|המורה מסבירה את השיעור;hago la tarea|אני עושה שיעורי בית'],
+['תחביבים','Aficiones','me gusta + פועל בצורה הבסיסית: me gusta nadar. jugar al + ספורט','música|מוסיקה;película|סרט;fútbol|כדורגל;jugar|לשחק;nadar|לשחות;cocinar|לבשל;pintar|לצייר;deporte|ספורט','me gusta nadar en el mar|אני אוהב לשחות בים;jugamos al fútbol|אנחנו משחקים כדורגל;ella pinta muy bien|היא מציירת מאוד טוב'],
+['טכנולוגיה','Tecnología','no tengo = אין לי. מילים רבות מאנגלית: internet, wifi','teléfono|טלפון;internet|אינטרנט;contraseña|סיסמה;mensaje|הודעה;pantalla|מסך;cargador|מטען;batería|סוללה;wifi|וויפי','no tengo batería|אין לי סוללה;cuál es la contraseña|מה הסיסמה;envío un mensaje|אני שולח הודעה'],
+['ביגוד','Ropa','llevar = ללבוש וגם לשאת. הבגד והתואר מתאימים במין ובמספר','pantalones|מכנסיים;vestido|שמלה;chaqueta|מעיל קל;falda|חצאית;sombrero|כובע;calcetines|גרביים;abrigo|מעיל;bolsa|תיק','llevo un abrigo|אני לובש מעיל;ella lleva un vestido rojo|היא לובשת שמלה אדומה;los pantalones son nuevos|המכנסיים חדשים'],
+['בעיר','Ciudad','hay = יש או ישנם, ולא משתנה: hay un banco, hay dos bancos','ciudad|עיר;museo|מוזיאון;parque|פארק;iglesia|כנסייה;mercado|שוק;banco|בנק;farmacia|בית מרקחת;supermercado|סופרמרקט','hay un parque cerca|יש פארק קרוב;el mercado abre temprano|השוק נפתח מוקדם;la farmacia está aquí|בית המרקחת כאן'],
+['רגשות','Emociones','tengo miedo = אני מפחד (עם tener). estar + רגש = מצב זמני','triste|עצוב;enfadado|כועס;nervioso|עצבני;contento|מרוצה;miedo|פחד;amor|אהבה;sorpresa|הפתעה;aburrido|משועמם','tengo miedo del perro|אני מפחד מהכלב;estoy muy contento|אני מאוד מרוצה;ella está triste hoy|היא עצובה היום'],
+['תוכניות לעתיד','Futuro','quiero, puedo, debo + פועל בצורה הבסיסית: puedo ayudar','pronto|בקרוב;quiero|אני רוצה;puedo|אני יכול;debo|אני חייב;espero|אני מקווה;plan|תוכנית;vacaciones|חופשה;sueño|חלום','puedo ayudarte mañana|אני יכול לעזור לך מחר;quiero viajar a España|אני רוצה לטוס לספרד;espero verte pronto|אני מקווה לראות אותך בקרוב'],
+['שיחה ושפה','Conversación','no entiendo = אני לא מבין. ¿puede repetir? = אפשר לחזור על זה','entiendo|אני מבין;despacio|לאט;otra vez|שוב;no sé|אני לא יודע;inglés|אנגלית;español|ספרדית;significa|זה אומר;repetir|לחזור על','no entiendo hable más despacio|אני לא מבין דבר לאט יותר;hablo un poco de español|אני מדבר קצת ספרדית;qué significa esta palabra|מה המילה הזאת אומרת'],
+['תיאור אנשים','Personas','ser + תואר. סיומת -o/-a משתנה, ואילו -e לא: amable, inteligente','alto|גבוה;bajo|נמוך;joven|צעיר;simpático|סימפטי;inteligente|חכם;amable|אדיב;guapo|נאה;rubio|בלונדיני','mi hermano es alto|אחי גבוה;ella es muy simpática|היא מאוד סימפטית;mis abuelos son amables|סבא וסבתא שלי אדיבים'],
+['טבע וחיות','Naturaleza','התואר מתאים לשם העצם: la montaña alta, los ríos largos','mar|ים;montaña|הר;río|נהר;bosque|יער;flor|פרח;árbol|עץ;pájaro|ציפור;caballo|סוס','el río es largo|הנהר ארוך;vemos un pájaro en el árbol|אנחנו רואים ציפור על העץ;la montaña es muy alta|ההר גבוה מאוד'],
+['פעלים לא סדירים','Irregulares','בגוף ראשון הרבה פעלים משתנים: hago, digo, vengo, veo, sé','hacer|לעשות;decir|לומר;poder|להיות מסוגל;querer|לרצות;saber|לדעת;ver|לראות;venir|לבוא;dar|לתת','yo hago la cena|אני מכין ארוחת ערב;ella dice la verdad|היא אומרת את האמת;vengo de la playa|אני בא מהחוף']
+];
+const U=D.map(([n,e,t,w,s])=>({n,e,t,w:w.split(';').map(x=>x.split('|')),s:s.split(';').map(x=>x.split('|'))}));
+const AW=U.flatMap(u=>u.w),AS=U.flatMap(u=>u.s),PR={n:'תרגול חכם',e:'Repaso',t:'חזרה על המילים שפחות שולטים בהן',w:[],s:[]},UU=()=>L.u<0?PR:U[L.u];
+const SEC={0:'יסודות',5:'חיי היומיום',10:'מסע ושטח',14:'בונים שפה',18:'חיים אמיתיים',24:'עבודה ופנאי',28:'עיר ואנשים',32:'שפה מתקדמת'};
+const BG=[[1,'Novato'],[2,'Curioso'],[3,'Viajero'],[5,'Hablante'],[8,'Fluido'],[12,'Maestro'],[16,'Experto'],[20,'Leyenda']];
+const GOAL=50,R=9e5,K='vamos.v2',T=['es2he','he2es','listen','cloze'];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+const ds=d=>d.toLocaleDateString('sv'),TD=ds(new Date()),YD=ds(new Date(Date.now()-864e5)),now=()=>Date.now();
+let S={};try{S=JSON.parse(localStorage[K])||{}}catch(e){}
+S=Object.assign({xp:0,streak:0,last:'',day:'',dxp:0,m:{},h:5,ht:0,c:{}},S);
+if(S.day!==TD){S.day=TD;S.dxp=0}
+if(S.last&&S.last!==TD&&S.last!==YD)S.streak=0;
+const save=()=>{try{localStorage[K]=JSON.stringify(S)}catch(e){}};
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[¿¡?!.,]/g,'').replace(/\s+/g,' ').trim();
+const view=id=>{$$('.view').forEach(v=>v.classList.toggle('on',v.id===id));scrollTo(0,0)};
+const fm=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return(s/60|0)+':'+String(s%60).padStart(2,'0')};
+function regen(){if(S.h<5){const n=Math.floor((now()-S.ht)/R);if(n>0){S.h=Math.min(5,S.h+n);S.ht=S.h>=5?0:S.ht+n*R;save()}}else S.ht=0}
+const hl=()=>'♥ '+S.h+(S.h<5?' · '+fm(S.ht+R-now()):'');
+setInterval(()=>{regen();$('#hh').textContent=hl();$('#hr').textContent='♥ '+S.h},1000);
+let AC;const beep=(f,d=.12,t='sine')=>{try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.12,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}};
+const good=()=>{beep(660,.1);setTimeout(()=>beep(880,.16),90)},bad=()=>beep(170,.28,'sawtooth');
+let VO=null,TA;
+const pickVoice=()=>{if(!window.speechSynthesis)return null;const vs=speechSynthesis.getVoices().filter(v=>/^es([-_]|$)/i.test(v.lang));if(!vs.length)return VO=null;const sc=v=>(/natural|neural|online|google|premium|enhanced|siri/i.test(v.name)?10:0)+(/es[-_]ES/i.test(v.lang)?3:/es[-_]MX/i.test(v.lang)?2:/es[-_]US/i.test(v.lang)?1:0);vs.sort((x,y)=>sc(y)-sc(x));return VO=vs[0]};
+if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+const say=t=>{
+  if(window.speechSynthesis)speechSynthesis.cancel();if(TA){TA.pause();TA=null}
+  const v=VO||pickVoice();
+  if(v){const u=new SpeechSynthesisUtterance(t);u.voice=v;u.lang=v.lang;u.rate=.85;speechSynthesis.speak(u);return}
+  /* no Spanish voice installed: fall back to an online Spanish voice */
+  TA=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(t));
+  TA.onerror=()=>{if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.85;speechSynthesis.speak(u)}};
+  TA.play().catch(TA.onerror)
+};
+const count=(el,to,ms=900,sf='')=>{const t0=performance.now();(function f(n){const p=Math.min((n-t0)/ms,1);el.textContent=Math.round(to*(1-Math.pow(1-p,3)))+sf;if(p<1)requestAnimationFrame(f)})(t0)};
+const lvl=x=>Math.floor(x/100)+1,bn=l=>BG.filter(b=>b[0]<=l).pop()[1];
+const pct=u=>Math.round(u.w.reduce((a,w)=>a+(S.m[w[0]]||0),0)/(u.w.length*3)*100);
+/* HOME */
+function home(){
+  regen();view('home');const lv=lvl(S.xp),cur=U.findIndex((u,i)=>!S.c[i]);
+  $('#lv').textContent='רמה '+lv;$('#hh').textContent=hl();
+  count($('#sk'),S.streak);
+  $('#skt').innerHTML=S.streak?`ימים ברצף<span>${S.last===TD?'המשיכו כך — חזרתם היום.':'תרגלו היום כדי לשמור על הרצף.'}</span>`:`בואו נתחיל רצף<span>שיעור אחד ביום. זה הכול.</span>`;
+  $('#gt').textContent=Math.min(S.dxp,GOAL)+' / '+GOAL+' XP';
+  $('#lvt').textContent='רמה '+lv+' · '+bn(lv);$('#lvx').textContent=S.xp%100+' / 100 XP';
+  requestAnimationFrame(()=>{$('#gb').style.width=Math.min(S.dxp/GOAL,1)*100+'%';$('#lvb').style.width=S.xp%100+'%'});
+  $('#bd').innerHTML=BG.map(b=>`<span lang="es" class="${lv>=b[0]?'on':''}">${b[1]}<small>רמה ${b[0]}</small></span>`).join('');
+  $('#units').innerHTML=U.map((u,i)=>{const p=pct(u),lk=i&&!S.c[i-1],s=S.c[i]||0;
+    return(SEC[i]?`<p class="h2 sec">${SEC[i]}</p>`:'')+`<button class="row${lk?' lk':''}${i===cur?' cur':''}" data-i="${i}"${lk?' disabled':''} style="animation-delay:${i%5*60}ms"><b>${String(i+1).padStart(2,'0')}</b><h3>${u.n}<small lang="es">${u.e}</small></h3><div><em>${lk?'נעול':'★'.repeat(s)+'☆'.repeat(3-s)+' '+p+'%'}</em><div class="bar"><i style="width:${p}%"></i></div></div></button>`}).join('');
+  $('#tot').textContent='סה״כ '+S.xp+' XP · '+Object.values(S.m).filter(v=>v>=2).length+' מילים נלמדו';$('#pr').disabled=Object.keys(S.m).length<4;
+}
+$('#units').onclick=e=>{const r=e.target.closest('.row');if(r&&!r.disabled)start(+r.dataset.i)};
+$('#pr').onclick=()=>start(-1);
+$('#rst').onclick=()=>{if(confirm('למחוק את כל ההתקדמות?')){S={xp:0,streak:0,last:'',day:TD,dxp:0,m:{},h:5,ht:0,c:{}};save();home()}};
+/* LESSON */
+let L;
+function start(i){
+  regen();if(S.h<=0){L={u:i,xp:0,ok:0,tot:1};return over()}
+  if(i<0)PR.w=Object.keys(S.m).map(k=>AW.find(x=>x[0]===k)).filter(Boolean).sort((a,b)=>S.m[a[0]]-S.m[b[0]]).slice(0,8);
+  const u=i<0?PR:U[i];const pw=sh(u.w).sort((a,b)=>(S.m[a[0]]||0)-(S.m[b[0]]||0)).slice(0,8);let q=sh(pw).map((w,k)=>({w,t:T[k%4]})).concat(sh(u.s).slice(0,3).map((w,k)=>({w,s:1,t:k%2?'be':'bh'})));
+  if(u.w.length>=4){const ws=sh(pw).slice(0,Math.min(5,pw.length));q.push({w:ws[0],ws,p:1,t:'pairs'})}
+  L={u:i,q:sh(q),tot:q.length,done:0,ok:0,combo:0,xp:0,miss:[],seen:new Set(),lock:false};
+  view('lesson');$('#cmb').textContent='';next();
+}
+function next(){
+  regen();$('#fb').className='';L.lock=false;L.hn=0;
+  $('#pb').style.width=L.done/L.tot*100+'%';$('#hr').textContent='♥ '+S.h;
+  if(S.h<=0)return over();if(!L.q.length)return finish();
+  const q=L.q[0],w=q.w;let t=q.t;
+  if(t==='listen'&&!window.speechSynthesis)t='es2he';if(t==='cloze'&&!q.c){const x=AS.find(x=>x[0].split(' ').includes(w[0]));if(x){const tk=x[0].split(' ');q.c={t:tk,h:x[1],i:tk.indexOf(w[0])}}else t='he2es'}q.t=t;
+  let h='';
+  if(q.s){
+    const be=t==='be',tg=(be?w[0]:w[1]).split(' ');
+    const pool=[...new Set(U.flatMap(u=>u.s.flatMap(s=>s[be?0:1].split(' '))).filter(x=>!tg.includes(x)))];
+    L.b={tg,tok:sh([...tg,...sh(pool).slice(0,2)]),an:[]};
+    const d=be?'dir="ltr" lang="es"':'dir="rtl"';
+    h=`<p class="cap">${be?'בנו את המשפט בספרדית':'בנו את המשפט בעברית'}</p><h2 class="big sm"${be?'':' lang="es"'}>${be?w[1]:w[0]}${be?'':'<button class="spk" data-s aria-label="השמעה">▶</button>'}</h2><div class="ans" id="an" ${d}></div><div class="bank" id="bk" ${d}></div><button class="sub" id="sb">בדיקה</button>`;
+  }else{
+    q.o=sh([w,...sh(U.flatMap(u=>u.w).filter(x=>x[0]!==w[0])).slice(0,3)]);
+    const es=t==='he2es'||t==='cloze',opts=()=>`<div class="opts">${q.o.map((x,i)=>`<button class="opt" data-i="${i}"><kbd>${i+1}</kbd><span${es?' lang="es"':''}>${x[es?0:1]}</span></button>`).join('')}</div>`;
+    if(t==='es2he')h=`<p class="cap">מה המשמעות בעברית?</p><h2 class="big" lang="es">${w[0]}<button class="spk" data-s aria-label="השמעה">▶</button></h2>${opts()}`;
+    if(t==='he2es')h=`<p class="cap">איך אומרים בספרדית?</p><h2 class="big">${w[1]}</h2>${opts()}`;
+    if(t==='listen')h=`<p class="cap">מה שמעתם?</p><h2 class="big"><button class="spk big2" data-s aria-label="השמעה">▶</button></h2>${opts()}`;
+    if(t==='cloze'){const c=q.c;h=`<p class="cap">השלימו את המשפט</p><h2 class="big sm" lang="es">${c.t.map((x,j)=>j===c.i?'_____':x).join(' ')}<button class="spk" data-s aria-label="השמעה">▶</button></h2><p class="cap" style="font-weight:500;opacity:.7">${c.h}</p>${opts()}`}
+    if(t==='pairs'){q.o=0;L.pr={a:null,done:0,err:0};const A=sh(q.ws),B=sh(q.ws),c='style="display:grid;gap:12px;align-content:start"';h=`<p class="cap">חברו כל מילה לתרגום שלה</p><div class="opts" style="grid-template-columns:1fr 1fr"><div ${c}>${A.map(x=>`<button class="opt" lang="es" data-pa="${x[0]}">${x[0]}</button>`).join('')}</div><div ${c}>${B.map(x=>`<button class="opt" data-pb="${x[0]}">${x[1]}</button>`).join('')}</div></div>`}
+  }
+  h+=(q.p?'<div class="hl"></div>':'<div class="hl"><button id="hb">רמז</button><button id="ik">לא יודע/ת — הצג פתרון</button></div>')+'<div class="hn" id="hn"></div>';
+  const el=$('#q');el.style.animation='none';el.offsetWidth;el.style.animation='';el.innerHTML=h;
+  if(q.s)rb();if(t==='listen')setTimeout(()=>say(w[0]),350);
+}
+function rb(){const B=L.b;
+  $('#an').innerHTML=B.an.map(i=>`<button class="tk" data-a="${i}">${B.tok[i]}</button>`).join('');
+  $('#bk').innerHTML=B.tok.map((t,i)=>`<button class="tk" data-b="${i}"${B.an.includes(i)?' disabled':''}>${t}</button>`).join('')}
+$('#q').onclick=e=>{
+  const g=s=>e.target.closest(s);
+  if(g('[data-s]'))return say(L.q[0].c?L.q[0].c.t.join(' '):L.q[0].w[0]);
+  if(L.lock)return;
+  const pa=g('[data-pa]'),pb=g('[data-pb]'),pbtn=pa||pb;
+  if(pbtn&&L.pr){
+    if(pbtn.disabled)return;
+    const cur=L.pr.a,side=pa?'pa':'pb';
+    if(cur===pbtn){pbtn.classList.remove('sel');L.pr.a=null;return}
+    if(!cur||cur.dataset[side]!==undefined){
+      $$('[data-pa],[data-pb]').forEach(x=>x.classList.remove('sel'));pbtn.classList.add('sel');L.pr.a=pbtn;
+      return pa?say(pa.dataset.pa):undefined}
+    const A=pa?pbtn:cur,B=pa?cur:pbtn;L.pr.a=null;A.classList.remove('sel');B.classList.remove('sel');
+    if(A.dataset.pa===B.dataset.pb){A.disabled=B.disabled=true;A.classList.add('ok');B.classList.add('ok');good();say(A.dataset.pa);if(++L.pr.done===L.q[0].ws.length)setTimeout(()=>grade(L.pr.err<2),500)}
+    else{L.pr.err++;bad();[A,B].forEach(x=>{x.classList.add('no');setTimeout(()=>x.classList.remove('no'),500)})}
+    return}
+  const b=g('.opt');if(b&&!b.disabled&&b.dataset.i!==undefined&&L.q[0].o)return pick(+b.dataset.i);
+  if(g('#sb'))return check();if(g('#hb'))return hint();if(g('#ik'))return reveal();
+  const a=g('[data-a]'),k=g('[data-b]');
+  if(a){L.b.an.splice(L.b.an.indexOf(+a.dataset.a),1);rb()}
+  else if(k&&!k.disabled){L.b.an.push(+k.dataset.b);rb()}
+};
+function pick(i){const q=L.q[0],ok=q.o[i][0]===q.w[0];
+  $$('.opt').forEach((b,k)=>{b.disabled=true;if(q.o[k][0]===q.w[0])b.classList.add('ok');else if(k===i)b.classList.add('no')});grade(ok)}
+function check(){const q=L.q[0];let ok;
+  if(q.s){const B=L.b;if(!B.an.length)return;ok=norm(B.an.map(i=>B.tok[i]).join(' '))===norm(B.tg.join(' '));$('#an').classList.add(ok?'ok':'no')}
+  
+  else return;
+  grade(ok)}
+function hint(){const q=L.q[0],w=q.w;if(L.hn)return;L.hn=q.h=1;$('#hb').disabled=true;let x;
+  if(q.s){const B=L.b;let p=0;while(p<B.an.length&&B.tok[B.an[p]]===B.tg[p])p++;B.an=B.an.slice(0,p);
+    const i=B.tok.findIndex((t,j)=>t===B.tg[p]&&!B.an.includes(j));if(i>=0)B.an.push(i);rb();x=`הוצבו ${B.an.length} מילים נכונות מתוך ${B.tg.length}`}
+  
+  else{$$('.opt').filter((b,k)=>q.o[k][0]!==w[0]).slice(0,2).forEach(b=>{b.disabled=true;b.classList.add('gone')});x='הוסרו שתי תשובות שגויות'}
+  $('#hn').innerHTML=`<span><b>רמז:</b> ${UU().t}<br>${x}</span><button class="spk sm" data-s aria-label="השמעה">▶</button>`;say(w[0])}
+function reveal(){const q=L.q[0],w=q.w;
+  if(q.s){const B=L.b;B.an=[];B.tg.forEach(t=>B.an.push(B.tok.findIndex((x,j)=>x===t&&!B.an.includes(j))));rb()}
+  
+  else $$('.opt').forEach((b,k)=>{b.disabled=true;if(q.o[k][0]===w[0])b.classList.add('ok')});
+  grade(0,1)}
+function grade(ok,sk){
+  L.lock=true;const q=L.q.shift(),w=q.w,k=w[0],fb=$('#fb'),first=!L.seen.has(k);L.last=k;
+  $('.hl').style.display='none';say(k);
+  if(ok){good();L.combo++;const g=q.h?5:10+(L.combo>=3?5:0);L.xp+=g;L.done++;
+    if(first&&!q.h){L.ok++;if(!q.s)S.m[k]=Math.min(3,(S.m[k]||0)+1)}
+    pop('+'+g);$('#fh').textContent=['נכון!','יפה מאוד!','בול!','מצוין!'][Math.random()*4|0];
+    $('#fp').innerHTML=`<span lang="es">${k}</span> = ${w[1]}`;fb.className='s ok';
+  }else{
+    L.combo=0;if(first)L.miss.push(w);
+    L.q.push({w,s:q.s,t:q.s?q.t:T[Math.random()*4|0]});
+    if(sk){$('#fh').textContent='הפתרון';$('#fp').innerHTML=`<b lang="es">${k}</b> = ${w[1]}<br>${UU().t}`;fb.className='s sk'}
+    else{bad();S.h=Math.max(0,S.h-1);if(S.h===4)S.ht=now();if(first&&!q.s)S.m[k]=Math.max(0,(S.m[k]||0)-1);save();
+      $('#fh').textContent='כמעט…';$('#fp').innerHTML=`התשובה: <b lang="es">${k}</b> = ${w[1]}`;fb.className='s no'}
+  }
+  L.seen.add(k);$('#hr').textContent='♥ '+S.h;
+  const c=$('#cmb');c.textContent=L.combo>1?'×'+L.combo:'';c.classList.remove('pop');c.offsetWidth;c.classList.add('pop');
+  $('#pb').style.width=L.done/L.tot*100+'%';setTimeout(()=>$('#fn').focus(),60);
+}
+function pop(t){const p=document.createElement('div');p.className='pts';p.textContent=t;document.body.append(p);setTimeout(()=>p.remove(),1000)}
+$('#fn').onclick=next;$('#fs').onclick=()=>say(L.last);
+$('#cls').onclick=()=>{if(!L.done||confirm('לצאת? ההתקדמות בשיעור זה לא תישמר.')){$('#fb').className='';home()}};
+addEventListener('keydown',e=>{
+  if(!$('#lesson').classList.contains('on'))return;
+  if(e.key==='Enter'){e.preventDefault();L.lock?next():check()}
+  else if(!L.lock&&/^[1-4]$/.test(e.key)){const q=L.q[0];if(q&&q.o&&q.o[e.key-1]&&!$$('.opt')[e.key-1].disabled)pick(+e.key-1)}
+});
+/* RESULT */
+function finish(){
+  const p=Math.round(L.ok/L.tot*100),bonus=p===100?20:0,old=S.c[L.u]||0,lv0=lvl(S.xp);L.xp+=bonus;
+  S.xp+=L.xp;S.dxp+=L.xp;S.h=5;S.ht=0;
+  if(S.last!==TD){S.streak=(S.last===YD?S.streak:0)+1;S.last=TD}
+  const st=p>=90?3:p>=60?2:1;if(L.u>=0)S.c[L.u]=Math.max(old,st);save();
+  const lv1=lvl(S.xp),nb=BG.filter(b=>b[0]>lv0&&b[0]<=lv1),m=[];
+  if(lv1>lv0)m.push(`עליתם לרמה ${lv1}`+(nb.length?` · תג חדש: <bdi lang="es">${nb[0][1]}</bdi>`:''));
+  if(!old&&L.u>=0&&L.u<U.length-1)m.push(`נפתחה יחידה חדשה: ${U[L.u+1].n}`);
+  if(bonus)m.push('בונוס שיעור ללא טעויות: +20 XP');
+  m.push('הלבבות התמלאו ♥ '+5);
+  view('res');$('#fb').className='';$('#ra').style.display='';
+  $('#rn').textContent=UU().n;
+  $('#rh').textContent=p===100?'מושלם!':p>=60?'כל הכבוד!':'ממשיכים לתרגל!';
+  $('#rs').innerHTML='★'.repeat(st)+'<s>'+'★'.repeat(3-st)+'</s>';
+  count($('#rx'),L.xp);count($('#rp'),p,900,'%');$('#rk').textContent=S.streak;
+  $('#rm').innerHTML=m.map(x=>`<div class="nw">${x}</div>`).join('')+(L.miss.length?`<p class="cap" style="margin-top:18px">לחזרה:</p><div class="miss">${L.miss.map(w=>`<span><bdi lang="es">${w[0]}</bdi> · ${w[1]}</span>`).join('')}</div>`:'<br>');
+  confetti(st);
+}
+function over(){
+  const p=Math.round(L.ok/L.tot*100);S.xp+=L.xp;S.dxp+=L.xp;L.xp=0;save();view('res');$('#fb').className='';
+  $('#rn').textContent=UU().n;$('#rh').textContent='נגמרו הלבבות';$('#rs').innerHTML='';
+  $('#rx').textContent=S.dxp;$('#rp').textContent=p+'%';$('#rk').textContent=S.streak;
+  $('#rm').innerHTML=`<div class="nw">לב חוזר כל 15 דקות · הלב הבא בעוד <bdi dir="ltr">${fm(S.ht+R-now())}</bdi></div><p class="cap">סיום שיעור ממלא את כל הלבבות. אפשר לחזור לחזרה על יחידה קודמת.</p><br>`;
+  $('#ra').style.display=S.h>0?'':'none';
+}
+$('#ra').onclick=()=>start(L.u);$('#rb').onclick=home;
+function confetti(n){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const c=$('#cv'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const P=Array.from({length:n*35},()=>({x:c.width/2,y:c.height*.35,vx:(Math.random()-.5)*16,vy:-Math.random()*14-4,s:6+Math.random()*10,r:Math.random()*6,c:Math.random()<.5?'#C8341D':'#1A1410'}));
+  let f=0;(function d(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});if(++f<130)requestAnimationFrame(d);else x.clearRect(0,0,c.width,c.height)})();
+}
+home();
+</script>
+</body>
+</html>
