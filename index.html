@@ -131,6 +131,14 @@ button{cursor:pointer;border:0;background:none}
 @media(max-width:560px){.row{grid-template-columns:auto 1fr}.row div:last-child{grid-column:1/-1}.opts{grid-template-columns:1fr}.opt{min-height:66px;padding:14px 16px}#fb div{flex-direction:column;align-items:stretch;gap:12px}#fb .bt button{flex:1}#fs{flex:none!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 .vs{margin:0 0 40px;background:var(--t);padding:14px 18px}.vs summary{font-weight:800;cursor:pointer}.vs label{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:12px;font-weight:700}.vs select{font:inherit;padding:10px;background:var(--g);border:2px solid var(--i);max-width:62%}.vs p{font-size:14px;margin-top:12px;opacity:.8}
+.rule{background:var(--t);padding:16px 18px;font-weight:700;font-size:18px;border-inline-start:6px solid var(--a);line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--t);padding:10px 14px;font-weight:800;text-align:start;border-bottom:3px solid var(--i);transition:transform .15s var(--e),background .2s}
+.chip small{display:block;font-weight:500;font-size:13px;opacity:.7}
+.chip:hover{background:#DFCFAE;transform:translateY(-2px)}
+.chr{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;direction:ltr}
+.chr button{min-width:44px;height:44px;background:var(--t);font-weight:800;font-size:20px;transition:background .2s,color .2s}
+.chr button:hover{background:var(--i);color:var(--g)}
 </style>
 </head>
 <body>
@@ -144,7 +152,7 @@ button{cursor:pointer;border:0;background:none}
   </section>
   <p class="h2">תגי רמה</p>
   <div class="bd" id="bd"></div>
-  <button class="sub" id="pr" style="margin:0 0 40px" disabled>★ תרגול חכם · חזרה על המילים החלשות שלכם</button><details class="vs" id="vs"><summary>🔊 הגדרות קול</summary><label>קול ספרדי<select id="vsel"></select></label><label>מהירות<select id="vr"><option value=".7">איטי</option><option value=".9">רגיל</option><option value="1">מהיר</option></select></label><button class="sub" id="vt" lang="es">▶ ¿Cómo estás? Mucho gusto</button><p>באייפון הקול נשמע יותר טבעי עם קול משופר: הגדרות › נגישות › תוכן מדובר › קולות › Español › בחרו קול עם הסימון Premium או משופר (למשל Mónica, Paulina או Jorge), ורעננו את הדף.</p></details><p class="h2">מסלול הלימוד</p>
+  <button class="sub" id="pr" style="margin:0 0 40px" disabled>★ תרגול חכם · חזרה על המילים החלשות שלכם</button><details class="vs" id="vs"><summary>🔊 הגדרות קול</summary><label>קול ספרדי<select id="vsel"></select></label><label>מהירות<select id="vr"><option value=".7">איטי</option><option value=".9">רגיל</option><option value="1">מהיר</option></select></label><label>צלילי אפקט<select id="vm"><option value="1">פעילים</option><option value="0">כבויים</option></select></label><button class="sub" id="vt" lang="es">▶ ¿Cómo estás? Mucho gusto</button><p>באייפון הקול נשמע יותר טבעי עם קול משופר: הגדרות › נגישות › תוכן מדובר › קולות › Español › בחרו קול עם הסימון Premium או משופר (למשל Mónica, Paulina או Jorge), ורעננו את הדף.</p></details><p class="h2">מסלול הלימוד</p>
   <div id="units"></div>
   <div class="foot"><span id="tot"></span><button id="rst">איפוס התקדמות</button></div>
   <div class="mega" lang="es" aria-hidden="true">¡Vamos!</div>
@@ -209,6 +217,48 @@ const D=[
 const U=D.map(([n,e,t,w,s])=>({n,e,t,w:w.split(';').map(x=>x.split('|')),s:s.split(';').map(x=>x.split('|'))}));
 const EX={0: ['bienvenido|ברוך הבא;hasta mañana|להתראות מחר;felicidades|מזל טוב;salud|לבריאות;encantado|שמח להכיר', 'buenos días cómo está usted|בוקר טוב מה שלומך אדוני;hasta mañana mis amigos|להתראות מחר חברים;muchas gracias por todo|תודה רבה על הכול'], 1: ['nombre|שם;país|מדינה;casado|נשוי;soltero|רווק;edad|גיל', 'mi nombre es Ana|השם שלי הוא אנה;soy soltero y vivo en Tel Aviv|אני רווק וגר בתל אביב;ella es de México|היא ממקסיקו'], 2: ['once|אחד עשר;doce|שנים עשר;quince|חמש עשרה;treinta|שלושים;cincuenta|חמישים', 'tengo doce años|יש לי שתים עשרה שנה;son las tres y media|השעה שלוש וחצי;cuesta cincuenta euros|זה עולה חמישים יורו'], 3: ['nieto|נכד;suegra|חמות;sobrino|אחיין;gemelo|תאום;familia|משפחה', 'mi familia es grande|המשפחה שלי גדולה;mi sobrino tiene cinco años|האחיין שלי בן חמש;mis abuelos viven aquí|סבא וסבתא שלי גרים כאן'], 4: ['la niña|הילדה;el niño|הילד;la flor|הפרח;unos amigos|כמה חברים;las casas|הבתים', 'el niño tiene un perro|לילד יש כלב;la mujer lee un libro|האישה קוראת ספר;las casas son grandes|הבתים גדולים'], 5: ['tomate|עגבנייה;ensalada|סלט;azúcar|סוכר;té|תה;jugo|מיץ', 'quiero una ensalada|אני רוצה סלט;el té está frío|התה קר;me gusta el pescado con arroz|אני אוהב דג עם אורז'], 6: ['reserva|הזמנה;cerveza|בירה;tenedor|מזלג;cuchillo|סכין;vaso|כוס', 'tengo una reserva|יש לי הזמנה;quisiera una cerveza|הייתי רוצה בירה;el vaso está sucio|הכוס מלוכלכת'], 7: ['lavar|לשטוף;ayudar|לעזור;limpiar|לנקות;preguntar|לשאול;mirar|להסתכל', 'ella lava los platos|היא שוטפת את הכלים;ayudo a mi madre|אני עוזר לאמא שלי;ellos miran la televisión|הם מסתכלים בטלוויזיה'], 8: ['ocupado|עסוק;listo|מוכן;ausente|נעדר;lleno|מלא;vacío|ריק', 'estoy muy ocupado|אני מאוד עסוק;la sala está llena|האולם מלא;ellos están listos|הם מוכנים'], 9: ['gris|אפור;morado|סגול;rosa|ורוד;marrón|חום [צבע];dorado|מוזהב', 'el cielo es azul|השמיים כחולים;mi gato es gris|החתול שלי אפור;tengo una flor rosa|יש לי פרח ורוד'], 10: ['este|מזרח;oeste|מערב;enfrente|מול;detrás|מאחור;al lado|ליד', 'el banco está enfrente|הבנק נמצא מול;la farmacia está al lado|בית המרקחת נמצא ליד;el museo está detrás de la plaza|המוזיאון נמצא מאחורי הכיכר'], 11: ['equipaje|כבודה;turista|תייר;taxi|מונית;entrada|כרטיס כניסה;puerta de embarque|שער עלייה', 'necesito un taxi|אני צריך מונית;el turista busca el hotel|התייר מחפש את המלון;mi equipaje es pesado|הכבודה שלי כבדה']};
 Object.entries(EX).forEach(([i,[w,s]])=>{const u=U[i];u.w.push(...w.split(";").map(x=>x.split("|")));u.s.push(...s.split(";").map(x=>x.split("|")))});
+const EX2=[
+['qué tal|מה נשמע;nos vemos|נתראה;igualmente|גם לך;hasta pronto|להתראות בקרוב מאוד','qué tal amigo|מה נשמע חבר;nos vemos mañana|נתראה מחר;igualmente señor|גם לך אדוני'],
+['idioma|שפה;hablo|אני מדבר;profesión|מקצוע;apellido|שם משפחה','mi apellido es Cohen|שם המשפחה שלי הוא כהן;hablo hebreo e inglés|אני מדבר עברית ואנגלית;mi profesión es médico|המקצוע שלי הוא רופא'],
+['trece|שלוש עשרה;catorce|ארבע עשרה;sesenta|שישים;ochenta|שמונים;mil|אלף','tengo sesenta euros|יש לי שישים יורו;hay catorce sillas|יש ארבע עשרה כיסאות;mil gracias|אלף תודות'],
+['padres|הורים;esposa|אישה (בת זוג);nieta|נכדה;cuñado|גיס','mis padres viven en Haifa|ההורים שלי גרים בחיפה;mi esposa es doctora|אשתי רופאה;mi cuñado es alto|הגיס שלי גבוה'],
+['el problema|הבעיה;la noche|הלילה;el agua|המים;el día|היום (יום)','el agua está fría|המים קרים;la noche es larga|הלילה ארוך;el problema es grande|הבעיה גדולה'],
+['cena|ארוחת ערב;almuerzo|ארוחת צהריים;verdura|ירקות;chocolate|שוקולד;helado|גלידה','la cena está lista|ארוחת הערב מוכנה;me gusta el helado de chocolate|אני אוהב גלידת שוקולד;comemos verdura hoy|אנחנו אוכלים ירקות היום'],
+['sabroso|טעים;pedir|להזמין;servilleta|מפית;menú del día|תפריט היום','quiero pedir una sopa|אני רוצה להזמין מרק;la servilleta está en la mesa|המפית על השולחן;el pollo está sabroso|העוף טעים'],
+['escuchar|להקשיב;usar|להשתמש;ganar|להרוויח;buscar|לחפש;lavar la ropa|לכבס','escucho música en casa|אני מקשיב למוזיקה בבית;busco mis llaves|אני מחפש את המפתחות;ella gana mucho|היא מרוויחה הרבה'],
+['abierto|פתוח;cerrado|סגור;limpio|נקי;sucio|מלוכלך;tranquilo|רגוע','la tienda está abierta|החנות פתוחה;la mesa está limpia|השולחן נקי;estoy muy tranquilo|אני מאוד רגוע'],
+['oscuro|כהה;largo|ארוך;corto|קצר;ancho|רחב','el pelo es largo|השיער ארוך;la falda es corta|החצאית קצרה;la calle es ancha|הרחוב רחב'],
+['cruzar|לחצות;seguir|להמשיך;semáforo|רמזור;centro|מרכז','cruce la calle|חצה את הרחוב;siga todo recto|המשך ישר;el hotel está en el centro|המלון נמצא במרכז'],
+['llegada|הגעה;viaje|נסיעה;ida y vuelta|הלוך וחזור;pasajero|נוסע;asiento|מושב','quiero un billete de ida y vuelta|אני רוצה כרטיס הלוך וחזור;el tren llega a las nueve|הרכבת מגיעה בתשע;mi asiento es grande|המושב שלי גדול'],
+['jueves|יום חמישי;sábado|יום שבת;ahora|עכשיו;hora|שעה;minuto|דקה','el sábado no trabajo|ביום שבת אני לא עובד;ahora es la una|עכשיו השעה אחת;tengo una hora libre|יש לי שעה פנויה'],
+['descuento|הנחה;recibo|קבלה;cambio|עודף;talla|מידה;gratis|בחינם','quiero un descuento|אני רוצה הנחה;necesito el recibo|אני צריך את הקבלה;el café es gratis|הקפה בחינם'],
+['incendio|שריפה;accidente|תאונה;testigo|עד;botiquín|ערכת עזרה ראשונה;perdido|אבוד','hay un accidente|יש תאונה;estoy perdido|אני אבוד;llame a una ambulancia|תתקשר לאמבולנס'],
+['tos|שיעול;resfriado|הצטננות;dentista|רופא שיניים;receta|מרשם;alergia|אלרגיה','tengo tos y fiebre|יש לי שיעול וחום;necesito una receta|אני צריך מרשם;voy al dentista|אני הולך לרופא שיניים'],
+['comprender|להבין;responder|לענות;compartir|לחלוק;permitir|לאפשר;partir|לצאת לדרך','comprendo la pregunta|אני מבין את השאלה;respondo el correo|אני עונה לדואר האלקטרוני;compartimos la comida|אנחנו חולקים את האוכל'],
+['tengo sed|אני צמא;tengo prisa|אני ממהר;tiene razón|הוא צודק;voy a comer|אני הולך לאכול;tienes que|אתה חייב','tengo prisa hoy|אני ממהר היום;ella tiene razón|היא צודקת;voy a comer pollo|אני הולך לאכול עוף'],
+['quiénes|מי (ברבים);cuáles|אילו;de dónde|מאיפה;a qué hora|באיזו שעה;cuánta|כמה (נקבה)','de dónde eres|מאיפה אתה;a qué hora es la cena|באיזו שעה ארוחת הערב;cuánto cuesta el billete|כמה עולה הכרטיס'],
+['escalera|מדרגות;llave|מפתח;lámpara|מנורה;armario|ארון;pared|קיר','la llave está en la mesa|המפתח על השולחן;la lámpara es nueva|המנורה חדשה;el armario es grande|הארון גדול'],
+['almorzar|לאכול ארוחת צהריים;cenar|לאכול ארוחת ערב;levantarse|לקום;acostarse|ללכת לישון;a veces|לפעמים','a veces ceno tarde|לפעמים אני אוכל ארוחת ערב מאוחר;me levanto a las siete|אני קם בשבע;me acuesto a las once|אני הולך לישון באחת עשרה'],
+['húmedo|לח;nublado|מעונן;helada|כפור;relámpago|ברק;temperatura|טמפרטורה','hoy está nublado|היום מעונן;hace mucho viento|יש הרבה רוח;la temperatura es alta|הטמפרטורה גבוהה'],
+['dije|אמרתי;vine|באתי;hice|עשיתי;pude|יכולתי;anoche|אמש','anoche dormí bien|אמש ישנתי טוב;hice la tarea ayer|עשיתי שיעורי בית אתמול;vine a casa temprano|באתי הביתה מוקדם'],
+['opino|אני סבור;estoy de acuerdo|אני מסכים;además|בנוסף;sin embargo|עם זאת;mejor|טוב יותר','estoy de acuerdo contigo|אני מסכים איתך;esto es mejor|זה טוב יותר;es caro sin embargo me gusta|זה יקר ועם זאת אני אוהב'],
+['cliente|לקוח;contrato|חוזה;horario|לוח זמנים;colega|עמית;proyecto|פרויקט','mi colega trabaja mucho|העמית שלי עובד הרבה;tengo un cliente nuevo|יש לי לקוח חדש;el horario es fácil|לוח הזמנים קל'],
+['cuaderno|מחברת;lápiz|עיפרון;nota|ציון;estudiante|סטודנט;biblioteca|ספרייה','el estudiante lee en la biblioteca|הסטודנט קורא בספרייה;necesito un cuaderno|אני צריך מחברת;saco buena nota|אני מקבל ציון טוב'],
+['guitarra|גיטרה;foto|תמונה;juego|משחק;excursión|טיול רגלי;bicicleta|אופניים','toco la guitarra|אני מנגן בגיטרה;me gusta ir en bicicleta|אני אוהב לנסוע באופניים;hacemos una excursión|אנחנו עושים טיול'],
+['archivo|קובץ;usuario|משתמש;aplicación|אפליקציה;cámara|מצלמה;enlace|קישור','abro el archivo|אני פותח את הקובץ;la aplicación es gratis|האפליקציה חינמית;envío un enlace|אני שולח קישור'],
+['camiseta|חולצת טי;jersey|סוודר;botas|מגפיים;gafas|משקפיים;guantes|כפפות','llevo gafas nuevas|אני עונד משקפיים חדשים;necesito unas botas|אני צריך מגפיים;la camiseta es azul|החולצה כחולה'],
+['cine|קולנוע;estación|תחנה;barrio|שכונה;edificio|בניין;ayuntamiento|עירייה','el cine está en mi barrio|הקולנוע בשכונה שלי;hay una estación cerca|יש תחנה קרובה;el edificio es viejo|הבניין ישן'],
+['alegre|עליז;preocupado|מודאג;orgulloso|גאה;solo|לבד;esperanza|תקווה','estoy preocupado por ti|אני מודאג לגביך;mi madre está orgullosa|אמא שלי גאה;me siento alegre|אני מרגיש עליז'],
+['futuro|עתיד;próximo|הבא;meta|מטרה;algún día|יום אחד;ojalá|הלוואי','ojalá llueva mañana|הלוואי שירד גשם מחר;mi meta es hablar bien|המטרה שלי היא לדבר טוב;el próximo año viajo|בשנה הבאה אני נוסע'],
+['perdone|סלח לי;repita|תחזור על זה;lento|איטי;palabra|מילה;frase|משפט','repita por favor|תחזור על זה בבקשה;no entiendo la palabra|אני לא מבין את המילה;hable más lento|דבר יותר לאט'],
+['delgado|רזה;fuerte|חזק;callado|שקט;divertido|מצחיק;serio|רציני','mi amigo es muy divertido|החבר שלי מאוד מצחיק;ella es seria|היא רצינית;él es fuerte|הוא חזק'],
+['lago|אגם;isla|אי;luna|ירח;estrella|כוכב;desierto|מדבר','la luna es bonita|הירח יפה;vivo cerca del desierto|אני גר ליד המדבר;hay una isla en el lago|יש אי באגם'],
+['poner|לשים;salir|לצאת;traer|להביא;oír|לשמוע;conocer|להכיר','pongo la mesa|אני מכין את השולחן;salgo de casa temprano|אני יוצא מהבית מוקדם;conozco a tu madre|אני מכיר את אמא שלך']
+];
+EX2.forEach(([w,s],i)=>{const u=U[i];if(!u)return;
+  w.split(';').map(x=>x.split('|')).filter(x=>!u.w.some(y=>y[0]===x[0])).forEach(x=>u.w.push(x));
+  s.split(';').map(x=>x.split('|')).filter(x=>!u.s.some(y=>y[0]===x[0])).forEach(x=>u.s.push(x))});
+U.forEach((u,i)=>{u.w.forEach(x=>x[2]=i);u.s.forEach(x=>x[2]=i)});
 const AW=U.flatMap(u=>u.w),AS=U.flatMap(u=>u.s),PR={n:'תרגול חכם',e:'Repaso',t:'חזרה על המילים שפחות שולטים בהן',w:[],s:[]},UU=()=>L.u<0?PR:U[L.u];
 const SEC={0:'יסודות',5:'חיי היומיום',10:'מסע ושטח',14:'בונים שפה',18:'חיים אמיתיים',24:'עבודה ופנאי',28:'עיר ואנשים',32:'שפה מתקדמת'};
 const BG=[[1,'Novato'],[2,'Curioso'],[3,'Viajero'],[5,'Hablante'],[8,'Fluido'],[12,'Maestro'],[16,'Experto'],[20,'Leyenda']];
@@ -227,7 +277,7 @@ const fm=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return(s/60|0)+':'+String(s
 function regen(){if(S.h<5){const n=Math.floor((now()-S.ht)/R);if(n>0){S.h=Math.min(5,S.h+n);S.ht=S.h>=5?0:S.ht+n*R;save()}}else S.ht=0}
 const hl=()=>'♥ '+S.h+(S.h<5?' · '+fm(S.ht+R-now()):'');
 setInterval(()=>{regen();$('#hh').textContent=hl();$('#hr').textContent='♥ '+S.h},1000);
-let AC;const beep=(f,d=.12,t='sine')=>{try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.12,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}};
+let AC;const beep=(f,d=.12,t='sine')=>{try{if(SP.fx===0)return;AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.12,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}};
 const good=()=>{beep(660,.1);setTimeout(()=>beep(880,.16),90)},bad=()=>beep(170,.28,'sawtooth');
 let TA,VO=null,SP={};try{SP=JSON.parse(localStorage['vamos.snd'])||{}}catch(e){}
 const saveSP=()=>{try{localStorage['vamos.snd']=JSON.stringify(SP)}catch(e){}};
@@ -250,7 +300,7 @@ const say=t=>{
 };
 function voiceUI(){const vs=esVoices().sort((a,b)=>vscore(b)-vscore(a)),sel=$('#vsel');
   sel.innerHTML=vs.length?vs.map(v=>`<option value="${v.voiceURI}">${v.name} (${v.lang})</option>`).join(''):'<option>לא נמצא קול ספרדי · נשתמש בקול מקוון</option>';
-  if(VO)sel.value=VO.voiceURI;$('#vr').value=SP.r||.9}
+  if(VO)sel.value=VO.voiceURI;$('#vr').value=SP.r||.9;$('#vm').value=SP.fx===0?'0':'1'}
 const count=(el,to,ms=900,sf='')=>{const t0=performance.now();(function f(n){const p=Math.min((n-t0)/ms,1);el.textContent=Math.round(to*(1-Math.pow(1-p,3)))+sf;if(p<1)requestAnimationFrame(f)})(t0)};
 const lvl=x=>Math.floor(x/100)+1,bn=l=>BG.filter(b=>b[0]<=l).pop()[1];
 const pct=u=>Math.min(100,Math.round(u.w.reduce((a,w)=>a+(S.m[w[0]]||0),0)/(Math.min(u.w.length,12)*3)*100));
@@ -268,53 +318,85 @@ function home(){
     return(SEC[i]?`<p class="h2 sec">${SEC[i]}</p>`:'')+`<button class="row${lk?' lk':''}${i===cur?' cur':''}" data-i="${i}"${lk?' disabled':''} style="animation-delay:${i%5*60}ms"><b>${String(i+1).padStart(2,'0')}</b><h3>${u.n}<small lang="es">${u.e}</small></h3><div><em>${lk?'נעול':'★'.repeat(s)+'☆'.repeat(3-s)+' '+p+'%'}</em><div class="bar"><i style="width:${p}%"></i></div></div></button>`}).join('');
   $('#tot').textContent='סה״כ '+S.xp+' XP · '+Object.values(S.m).filter(v=>v>=2).length+' מילים נלמדו';$('#pr').disabled=Object.keys(S.m).length<4;
 }
-$('#vs').ontoggle=voiceUI;$('#vsel').onchange=e=>{SP.v=e.target.value;saveSP();say('hola, mucho gusto')};$('#vr').onchange=e=>{SP.r=+e.target.value;saveSP();say('hola, mucho gusto')};$('#vt').onclick=()=>say('cómo estás, mucho gusto');
+$('#vs').ontoggle=voiceUI;$('#vsel').onchange=e=>{SP.v=e.target.value;saveSP();say('hola, mucho gusto')};$('#vr').onchange=e=>{SP.r=+e.target.value;saveSP();say('hola, mucho gusto')};$('#vt').onclick=()=>say('cómo estás, mucho gusto');$('#vm').onchange=e=>{SP.fx=+e.target.value;saveSP();good()};
 $('#units').onclick=e=>{const r=e.target.closest('.row');if(r&&!r.disabled)start(+r.dataset.i)};
 $('#pr').onclick=()=>start(-1);
 $('#rst').onclick=()=>{if(confirm('למחוק את כל ההתקדמות?')){S={xp:0,streak:0,last:'',day:TD,dxp:0,m:{},h:5,ht:0,c:{}};save();home()}};
 /* LESSON */
 let L;
+const WT=[{es2he:4,he2es:2,listen:2,cloze:1},{es2he:2,he2es:3,listen:2,cloze:2,type:1},{he2es:3,listen:2,cloze:2,type:3,dict:2},{he2es:2,cloze:2,type:3,dict:3,listen:1}],ST={be:3,bh:3,bl:2,sm:3};
+const wp=o=>{const e=Object.entries(o);let r=Math.random()*e.reduce((a,x)=>a+x[1],0);for(const[k,v]of e)if((r-=v)<0)return k;return e[0][0]};
+const wtype=(w,avoid)=>{let t;for(let i=0;i<4;i++){t=wp(WT[Math.min(3,S.m[w[0]]||0)]);if(t!==avoid)break}return t};
+const wc=s=>s.split(' ').length,sayTxt=q=>q.c?q.c.t.join(' '):q.w[0];
+const hasW=(s,w)=>(' '+s.toLowerCase()+' ').includes(' '+w+' ');
+const exFor=w=>sh(AS).find(x=>hasW(x[0],w[0]));
+function mkO(w,s){let len=s?0:wc(w[0]);const sn=new Set([w[0],w[1]]),A=s?AS:AW,UP=s?U[w[2]].s:U[w[2]].w,out=[];
+  const take=(a,m)=>{let c=0;for(const x of sh(a)){if(c>=m||out.length>=3)break;if(!sn.has(x[0])&&!sn.has(x[1])&&(!len||wc(x[0])===len)){out.push(x);sn.add(x[0]);sn.add(x[1]);c++}}};
+  take(UP,2);take(A,3);len=0;take(A,3);return sh([w,...out])}
+function mkCloze(w){const n=wc(w[0]);for(const x of sh(AS)){const tk=x[0].split(' ');for(let i=0;i+n<=tk.length;i++)if(tk.slice(i,i+n).join(' ').toLowerCase()===w[0])return{t:tk,h:x[1],i,n}}return null}
+function mkB(w,t){const side=t==='bh'?1:0,tg=w[side].split(' '),bad=new Set(tg.map(x=>x.toLowerCase())),
+  same=[...new Set(U[w[2]].s.flatMap(s=>s[side].split(' ')))],all=[...new Set(AS.flatMap(s=>s[side].split(' ')))],dn=2+(Math.random()<.4?1:0),
+  d=[...sh(same),...sh(all)].filter((x,i,a)=>!bad.has(x.toLowerCase())&&a.indexOf(x)===i).slice(0,dn);
+  return{tg,tok:sh([...tg,...d]),an:[]}}
 function start(i){
   regen();if(S.h<=0){L={u:i,xp:0,ok:0,tot:1};return over()}
-  if(i<0)PR.w=Object.keys(S.m).map(k=>AW.find(x=>x[0]===k)).filter(Boolean).sort((a,b)=>S.m[a[0]]-S.m[b[0]]).slice(0,8);
-  const u=i<0?PR:U[i];const pw=sh(u.w).sort((a,b)=>(S.m[a[0]]||0)-(S.m[b[0]]||0)).slice(0,8);let q=sh(pw).map((w,k)=>({w,t:T[k%4]})).concat(sh(u.s).slice(0,4).map((w,k)=>({w,s:1,t:k%2?'be':'bh'})));
-  if(u.w.length>=4){const ws=sh(pw).slice(0,Math.min(5,pw.length));q.push({w:ws[0],ws,p:1,t:'pairs'})}
-  L={u:i,q:sh(q),tot:q.length,done:0,ok:0,combo:0,xp:0,miss:[],seen:new Set(),lock:false};
-  view('lesson');$('#cmb').textContent='';next();
+  const sc=w=>(S.m[w[0]]||0)+Math.random()*1.6,pickW=(a,n)=>a.map(x=>[sc(x),x]).sort((p,q)=>p[0]-q[0]).slice(0,n).map(x=>x[1]);
+  if(i<0){PR.w=pickW(Object.keys(S.m).map(k=>AW.find(x=>x[0]===k)).filter(Boolean),12);PR.s=AS.filter(s=>PR.w.some(w=>hasW(s[0],w[0])))}
+  const u=i<0?PR:U[i],pw=pickW(u.w,8+(Math.random()*3|0));
+  let q=pw.map(w=>({w,t:wtype(w)}));
+  if(i>0){const rp=U.slice(0,i).filter((_,j)=>S.c[j]).flatMap(x=>x.w);pickW(rp,2).forEach(w=>q.push({w,rv:1,t:wtype(w)}))}
+  q=q.concat(sh(u.s).slice(0,4+(Math.random()*2|0)).map(w=>({w,s:1,t:wp(ST)})));
+  if(pw.length>=4)for(let r=pw.length>=9&&Math.random()<.5?2:1;r--;){const ws=sh(pw).slice(0,Math.min(5,pw.length));q.push({w:ws[0],ws,p:1,t:'pairs'})}
+  L={u:i,q:sh(q),tot:q.length,done:0,ok:0,combo:0,xp:0,miss:[],seen:new Set(),lock:false,intro:1,cur:null};
+  view('lesson');$('#cmb').textContent='';$('#fb').className='';$('#hr').textContent='♥ '+S.h;$('#pb').style.width='0';
+  const el=$('#q');el.style.animation='none';el.offsetWidth;el.style.animation='';
+  el.innerHTML=`<p class="cap" lang="es">${u.e}</p><h2 class="big sm">${u.n}</h2><p class="rule">${u.t}</p><p class="cap">מילים בשיעור · לחצו לשמיעה</p><div class="chips">${pw.map(w=>`<button class="chip" data-say="${w[0]}"><bdi lang="es">${w[0]}</bdi><small>${w[1]}</small></button>`).join('')}</div><button class="sub" id="go">מתחילים</button>`;
 }
+function go(){L.intro=0;next()}
 function next(){
-  regen();$('#fb').className='';L.lock=false;L.hn=0;
+  regen();$('#fb').className='';L.lock=false;L.hn=0;L.sp=0;
   $('#pb').style.width=L.done/L.tot*100+'%';$('#hr').textContent='♥ '+S.h;
   if(S.h<=0)return over();if(!L.q.length)return finish();
-  const q=L.q[0],w=q.w;let t=q.t;
-  if(t==='listen'&&!window.speechSynthesis)t='es2he';if(t==='cloze'&&!q.c){const x=sh(AS.filter(x=>x[0].split(' ').includes(w[0])))[0];if(x){const tk=x[0].split(' ');q.c={t:tk,h:x[1],i:tk.indexOf(w[0])}}else t='he2es'}q.t=t;
-  let h='';
-  if(q.s){
-    const be=t==='be',tg=(be?w[0]:w[1]).split(' ');
-    const pool=[...new Set(U.flatMap(u=>u.s.flatMap(s=>s[be?0:1].split(' '))).filter(x=>!tg.includes(x)))];
-    L.b={tg,tok:sh([...tg,...sh(pool).slice(0,2)]),an:[]};
-    const d=be?'dir="ltr" lang="es"':'dir="rtl"';
-    h=`<p class="cap">${be?'בנו את המשפט בספרדית':'בנו את המשפט בעברית'}</p><h2 class="big sm"${be?'':' lang="es"'}>${be?w[1]:w[0]}${be?'':'<button class="spk" data-s aria-label="השמעה">▶</button>'}</h2><div class="ans" id="an" ${d}></div><div class="bank" id="bk" ${d}></div><button class="sub" id="sb">בדיקה</button>`;
+  const q=L.cur=L.q[0],w=q.w,sy=!!window.speechSynthesis;let t=q.t;
+  if(!sy){if(t==='listen')t='es2he';if(t==='dict')t='type';if(t==='bl')t='be'}
+  if(t==='cloze'&&!q.c&&!(q.c=mkCloze(w)))t='he2es';
+  q.t=t;q.bld=t==='be'||t==='bh'||t==='bl';q.ty=t==='type'||t==='dict';
+  let h='';const spk='<button class="spk" data-s aria-label="השמעה">▶</button>',big2='<h2 class="big"><button class="spk big2" data-s aria-label="השמעה">▶</button></h2>';
+  if(q.bld){
+    L.b=mkB(w,t);const d=t==='bh'?'dir="rtl"':'dir="ltr" lang="es"';
+    h=(t==='be'?`<p class="cap">בנו את המשפט בספרדית</p><h2 class="big sm">${w[1]}</h2>`:t==='bh'?`<p class="cap">בנו את המשפט בעברית</p><h2 class="big sm" lang="es">${w[0]}${spk}</h2>`:`<p class="cap">הקשיבו ובנו את המשפט בספרדית</p>${big2}`)
+      +`<div class="ans" id="an" ${d}></div><div class="bank" id="bk" ${d}></div><button class="sub" id="sb">בדיקה</button>`;
+  }else if(q.ty){
+    const inp=`<input class="inp" id="ti" lang="es" dir="ltr" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="תשובה"><div class="chr">${[...'áéíóúñü¿¡'].map(c=>`<button data-ch="${c}" tabindex="-1">${c}</button>`).join('')}</div><button class="sub" id="sb">בדיקה</button>`;
+    h=(t==='type'?`<p class="cap">כתבו בספרדית · אפשר בלי סימני הדגשה</p><h2 class="big">${w[1]}</h2>`:`<p class="cap">הקלידו את מה ששמעתם</p>${big2}`)+inp;
+  }else if(q.p){
+    q.o=0;L.pr={a:null,done:0,err:0};const A=sh(q.ws),B=sh(q.ws),c='style="display:grid;gap:12px;align-content:start"';
+    h=`<p class="cap">חברו כל מילה לתרגום שלה</p><div class="opts" style="grid-template-columns:1fr 1fr"><div ${c}>${A.map(x=>`<button class="opt" lang="es" data-pa="${x[0]}">${x[0]}</button>`).join('')}</div><div ${c}>${B.map(x=>`<button class="opt" data-pb="${x[0]}">${x[1]}</button>`).join('')}</div></div>`;
   }else{
-    {const sn=new Set([w[0],w[1]]);q.o=sh([w,...sh(AW).filter(x=>!sn.has(x[0])&&!sn.has(x[1])&&sn.add(x[0])&&sn.add(x[1])).slice(0,3)])}
-    const es=t==='he2es'||t==='cloze',opts=()=>`<div class="opts">${q.o.map((x,i)=>`<button class="opt" data-i="${i}"><kbd>${i+1}</kbd><span${es?' lang="es"':''}>${x[es?0:1]}</span></button>`).join('')}</div>`;
-    if(t==='es2he')h=`<p class="cap">מה המשמעות בעברית?</p><h2 class="big" lang="es">${w[0]}<button class="spk" data-s aria-label="השמעה">▶</button></h2>${opts()}`;
-    if(t==='he2es')h=`<p class="cap">איך אומרים בספרדית?</p><h2 class="big">${w[1]}</h2>${opts()}`;
-    if(t==='listen')h=`<p class="cap">מה שמעתם?</p><h2 class="big"><button class="spk big2" data-s aria-label="השמעה">▶</button></h2>${opts()}`;
-    if(t==='cloze'){const c=q.c;h=`<p class="cap">השלימו את המשפט</p><h2 class="big sm" lang="es">${c.t.map((x,j)=>j===c.i?'_____':x).join(' ')}<button class="spk" data-s aria-label="השמעה">▶</button></h2><p class="cap" style="font-weight:500;opacity:.7">${c.h}</p>${opts()}`}
-    if(t==='pairs'){q.o=0;L.pr={a:null,done:0,err:0};const A=sh(q.ws),B=sh(q.ws),c='style="display:grid;gap:12px;align-content:start"';h=`<p class="cap">חברו כל מילה לתרגום שלה</p><div class="opts" style="grid-template-columns:1fr 1fr"><div ${c}>${A.map(x=>`<button class="opt" lang="es" data-pa="${x[0]}">${x[0]}</button>`).join('')}</div><div ${c}>${B.map(x=>`<button class="opt" data-pb="${x[0]}">${x[1]}</button>`).join('')}</div></div>`}
+    q.o=mkO(w,q.s);const es=t==='he2es'||t==='cloze',os=`<div class="opts">${q.o.map((x,i)=>`<button class="opt" data-i="${i}"><kbd>${i+1}</kbd><span${es?' lang="es"':''}>${x[es?0:1]}</span></button>`).join('')}</div>`;
+    if(t==='es2he')h=`<p class="cap">מה המשמעות בעברית?</p><h2 class="big" lang="es">${w[0]}${spk}</h2>${os}`;
+    if(t==='he2es')h=`<p class="cap">איך אומרים בספרדית?</p><h2 class="big">${w[1]}</h2>${os}`;
+    if(t==='listen')h=`<p class="cap">מה שמעתם?</p>${big2}${os}`;
+    if(t==='sm')h=`<p class="cap">מה המשמעות של המשפט?</p><h2 class="big sm" lang="es">${w[0]}${spk}</h2>${os}`;
+    if(t==='cloze'){const c=q.c;h=`<p class="cap">השלימו את המשפט</p><h2 class="big sm" lang="es">${c.t.slice(0,c.i).concat('_____',c.t.slice(c.i+c.n)).join(' ')}${spk}</h2><p class="cap" style="font-weight:500;opacity:.7">${c.h}</p>${os}`}
   }
   h+=(q.p?'<div class="hl"></div>':'<div class="hl"><button id="hb">רמז</button><button id="ik">לא יודע/ת — הצג פתרון</button></div>')+'<div class="hn" id="hn"></div>';
   const el=$('#q');el.style.animation='none';el.offsetWidth;el.style.animation='';el.innerHTML=h;
-  if(q.s)rb();if(t==='listen')setTimeout(()=>say(w[0]),350);
+  if(q.bld)rb();
+  if(t==='listen'||t==='dict'||t==='bl')setTimeout(()=>say(sayTxt(q)),350);
+  if(q.ty)setTimeout(()=>{const i=$('#ti');if(i&&!L.lock)i.focus()},t==='dict'?450:80);
 }
 function rb(){const B=L.b;
   $('#an').innerHTML=B.an.map(i=>`<button class="tk" data-a="${i}">${B.tok[i]}</button>`).join('');
   $('#bk').innerHTML=B.tok.map((t,i)=>`<button class="tk" data-b="${i}"${B.an.includes(i)?' disabled':''}>${t}</button>`).join('')}
 $('#q').onclick=e=>{
   const g=s=>e.target.closest(s);
-  if(g('[data-s]'))return say(L.q[0].c?L.q[0].c.t.join(' '):L.q[0].w[0]);
-  if(L.lock)return;
+  const sy=g('[data-say]');if(sy)return say(sy.dataset.say);
+  if(g('#go'))return go();
+  if(g('[data-s]'))return L.cur&&say(sayTxt(L.cur));
+  if(L.lock||!L.cur)return;
+  const ch=g('[data-ch]');
+  if(ch){const i=$('#ti');if(i&&!i.readOnly){const s=i.selectionStart??i.value.length;i.setRangeText(ch.dataset.ch,s,i.selectionEnd??s,'end');i.focus()}return}
   const pa=g('[data-pa]'),pb=g('[data-pb]'),pbtn=pa||pb;
   if(pbtn&&L.pr){
     if(pbtn.disabled)return;
@@ -324,31 +406,31 @@ $('#q').onclick=e=>{
       $$('[data-pa],[data-pb]').forEach(x=>x.classList.remove('sel'));pbtn.classList.add('sel');L.pr.a=pbtn;
       return pa?say(pa.dataset.pa):undefined}
     const A=pa?pbtn:cur,B=pa?cur:pbtn;L.pr.a=null;A.classList.remove('sel');B.classList.remove('sel');
-    if(A.dataset.pa===B.dataset.pb){A.disabled=B.disabled=true;A.classList.add('ok');B.classList.add('ok');good();say(A.dataset.pa);if(++L.pr.done===L.q[0].ws.length)setTimeout(()=>grade(L.pr.err<2),500)}
+    if(A.dataset.pa===B.dataset.pb){A.disabled=B.disabled=true;A.classList.add('ok');B.classList.add('ok');good();say(A.dataset.pa);if(++L.pr.done===L.cur.ws.length)setTimeout(()=>grade(L.pr.err<2),500)}
     else{L.pr.err++;bad();[A,B].forEach(x=>{x.classList.add('no');setTimeout(()=>x.classList.remove('no'),500)})}
     return}
-  const b=g('.opt');if(b&&!b.disabled&&b.dataset.i!==undefined&&L.q[0].o)return pick(+b.dataset.i);
+  const b=g('.opt');if(b&&!b.disabled&&b.dataset.i!==undefined&&L.cur.o)return pick(+b.dataset.i);
   if(g('#sb'))return check();if(g('#hb'))return hint();if(g('#ik'))return reveal();
   const a=g('[data-a]'),k=g('[data-b]');
-  if(a){L.b.an.splice(L.b.an.indexOf(+a.dataset.a),1);rb()}
-  else if(k&&!k.disabled){L.b.an.push(+k.dataset.b);rb()}
+  if(a&&L.b){L.b.an.splice(L.b.an.indexOf(+a.dataset.a),1);rb()}
+  else if(k&&!k.disabled&&L.b){L.b.an.push(+k.dataset.b);rb()}
 };
-function pick(i){const q=L.q[0],ok=q.o[i][0]===q.w[0];
+function pick(i){const q=L.cur,ok=q.o[i][0]===q.w[0];
   $$('.opt').forEach((b,k)=>{b.disabled=true;if(q.o[k][0]===q.w[0])b.classList.add('ok');else if(k===i)b.classList.add('no')});grade(ok)}
-function check(){const q=L.q[0];let ok;
-  if(q.s){const B=L.b;if(!B.an.length)return;ok=norm(B.an.map(i=>B.tok[i]).join(' '))===norm(B.tg.join(' '));$('#an').classList.add(ok?'ok':'no')}
-  
+function check(){const q=L.cur;if(!q||L.lock)return;let ok;
+  if(q.bld){const B=L.b;if(!B.an.length)return;ok=norm(B.an.map(i=>B.tok[i]).join(' '))===norm(B.tg.join(' '));$('#an').classList.add(ok?'ok':'no')}
+  else if(q.ty){const i=$('#ti'),v=i.value.trim();if(!v)return;ok=norm(v)===norm(q.w[0]);i.classList.add(ok?'ok':'no');i.readOnly=true;if(ok&&v.toLowerCase()!==q.w[0].toLowerCase())L.sp=1}
   else return;
   grade(ok)}
-function hint(){const q=L.q[0],w=q.w;if(L.hn)return;L.hn=q.h=1;$('#hb').disabled=true;let x;
-  if(q.s){const B=L.b;let p=0;while(p<B.an.length&&B.tok[B.an[p]]===B.tg[p])p++;B.an=B.an.slice(0,p);
+function hint(){const q=L.cur,w=q.w;if(L.hn)return;L.hn=q.h=1;$('#hb').disabled=true;let x;
+  if(q.bld){const B=L.b;let p=0;while(p<B.an.length&&B.tok[B.an[p]]===B.tg[p])p++;B.an=B.an.slice(0,p);
     const i=B.tok.findIndex((t,j)=>t===B.tg[p]&&!B.an.includes(j));if(i>=0)B.an.push(i);rb();x=`הוצבו ${B.an.length} מילים נכונות מתוך ${B.tg.length}`}
-  
+  else if(q.ty){const i=$('#ti'),n=Math.max(1,Math.ceil(w[0].length/3));i.value=w[0].slice(0,n);i.focus();x=`הוצגו ${n} אותיות ראשונות`}
   else{$$('.opt').filter((b,k)=>q.o[k][0]!==w[0]).slice(0,2).forEach(b=>{b.disabled=true;b.classList.add('gone')});x='הוסרו שתי תשובות שגויות'}
-  $('#hn').innerHTML=`<span><b>רמז:</b> ${UU().t}<br>${x}</span><button class="spk sm" data-s aria-label="השמעה">▶</button>`;say(w[0])}
-function reveal(){const q=L.q[0],w=q.w;
-  if(q.s){const B=L.b;B.an=[];B.tg.forEach(t=>B.an.push(B.tok.findIndex((x,j)=>x===t&&!B.an.includes(j))));rb()}
-  
+  $('#hn').innerHTML=`<span><b>רמז:</b> ${UU().t}<br>${x}</span><button class="spk sm" data-s aria-label="השמעה">▶</button>`;say(sayTxt(q))}
+function reveal(){const q=L.cur,w=q.w;
+  if(q.bld){const B=L.b;B.an=[];B.tg.forEach(t=>B.an.push(B.tok.findIndex((x,j)=>x===t&&!B.an.includes(j))));rb()}
+  else if(q.ty){const i=$('#ti');i.value=w[0];i.readOnly=true}
   else $$('.opt').forEach((b,k)=>{b.disabled=true;if(q.o[k][0]===w[0])b.classList.add('ok')});
   grade(0,1)}
 function grade(ok,sk){
@@ -356,14 +438,15 @@ function grade(ok,sk){
   $('.hl').style.display='none';say(k);
   if(ok){good();L.combo++;const g=q.h?5:10+(L.combo>=3?5:0);L.xp+=g;L.done++;
     if(first&&!q.h){L.ok++;if(!q.s)S.m[k]=Math.min(3,(S.m[k]||0)+1)}
-    pop('+'+g);$('#fh').textContent=['נכון!','יפה מאוד!','בול!','מצוין!'][Math.random()*4|0];
-    $('#fp').innerHTML=`<span lang="es">${k}</span> = ${w[1]}`;fb.className='s ok';
+    pop('+'+g);$('#fh').textContent=['נכון!','יפה מאוד!','בול!','מצוין!','אלוף!','בדיוק!'][Math.random()*6|0];
+    $('#fp').innerHTML=`<span lang="es">${k}</span> = ${w[1]}`+(L.sp?`<br><small>שימו לב לכתיב: <b lang="es">${k}</b></small>`:'');fb.className='s ok';
   }else{
     L.combo=0;if(first)L.miss.push(w);
-    L.q.push({w,s:q.s,t:q.s?q.t:T[Math.random()*4|0]});
-    if(sk){$('#fh').textContent='הפתרון';$('#fp').innerHTML=`<b lang="es">${k}</b> = ${w[1]}<br>${UU().t}`;fb.className='s sk'}
+    L.q.splice(Math.min(L.q.length,2+(Math.random()*3|0)),0,{w,s:q.s,rv:q.rv,t:q.s?wp(ST):wp(WT[0])});
+    const e=q.s?null:exFor(w),ex=e?`<br><bdi lang="es">${e[0]}</bdi> · ${e[1]}`:'';
+    if(sk){$('#fh').textContent='הפתרון';$('#fp').innerHTML=`<b lang="es">${k}</b> = ${w[1]}${ex}<br>${UU().t}`;fb.className='s sk'}
     else{bad();S.h=Math.max(0,S.h-1);if(S.h===4)S.ht=now();if(first&&!q.s)S.m[k]=Math.max(0,(S.m[k]||0)-1);save();
-      $('#fh').textContent='כמעט…';$('#fp').innerHTML=`התשובה: <b lang="es">${k}</b> = ${w[1]}`;fb.className='s no'}
+      $('#fh').textContent='כמעט…';$('#fp').innerHTML=`התשובה: <b lang="es">${k}</b> = ${w[1]}${ex}`;fb.className='s no'}
   }
   L.seen.add(k);$('#hr').textContent='♥ '+S.h;
   const c=$('#cmb');c.textContent=L.combo>1?'×'+L.combo:'';c.classList.remove('pop');c.offsetWidth;c.classList.add('pop');
@@ -373,20 +456,21 @@ function pop(t){const p=document.createElement('div');p.className='pts';p.textCo
 $('#fn').onclick=next;$('#fs').onclick=()=>say(L.last);
 $('#cls').onclick=()=>{if(!L.done||confirm('לצאת? ההתקדמות בשיעור זה לא תישמר.')){$('#fb').className='';home()}};
 addEventListener('keydown',e=>{
-  if(!$('#lesson').classList.contains('on'))return;
+  if(!$('#lesson').classList.contains('on')||!L)return;
+  if(L.intro){if(e.key==='Enter'){e.preventDefault();go()}return}
   if(e.key==='Enter'){e.preventDefault();L.lock?next():check()}
-  else if(!L.lock&&/^[1-4]$/.test(e.key)){const q=L.q[0];if(q&&q.o&&q.o[e.key-1]&&!$$('.opt')[e.key-1].disabled)pick(+e.key-1)}
+  else if(!L.lock&&/^[1-4]$/.test(e.key)){const q=L.cur;if(q&&q.o&&q.o[e.key-1]&&!$$('.opt')[e.key-1].disabled)pick(+e.key-1)}
 });
 /* RESULT */
 function finish(){
-  const p=Math.round(L.ok/L.tot*100),bonus=p===100?20:0,old=S.c[L.u]||0,lv0=lvl(S.xp);L.xp+=bonus;
+  const p=Math.round(L.ok/L.tot*100),bonus=p===100?20:0,old=S.c[L.u]||0,lv0=lvl(S.xp),d0=S.dxp;L.xp+=bonus;
   S.xp+=L.xp;S.dxp+=L.xp;S.h=5;S.ht=0;
   if(S.last!==TD){S.streak=(S.last===YD?S.streak:0)+1;S.last=TD}
   const st=p>=90?3:p>=60?2:1;if(L.u>=0)S.c[L.u]=Math.max(old,st);save();
   const lv1=lvl(S.xp),nb=BG.filter(b=>b[0]>lv0&&b[0]<=lv1),m=[];
   if(lv1>lv0)m.push(`עליתם לרמה ${lv1}`+(nb.length?` · תג חדש: <bdi lang="es">${nb[0][1]}</bdi>`:''));
   if(!old&&L.u>=0&&L.u<U.length-1)m.push(`נפתחה יחידה חדשה: ${U[L.u+1].n}`);
-  if(bonus)m.push('בונוס שיעור ללא טעויות: +20 XP');
+  if(bonus)m.push('בונוס שיעור ללא טעויות: +20 XP');if(d0<GOAL&&S.dxp>=GOAL)m.push('היעד היומי הושג ✓');
   m.push('הלבבות התמלאו ♥ '+5);
   view('res');$('#fb').className='';$('#ra').style.display='';
   $('#rn').textContent=UU().n;
