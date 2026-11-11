@@ -276,7 +276,7 @@ const view=id=>{$$('.view').forEach(v=>v.classList.toggle('on',v.id===id));scrol
 const fm=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return(s/60|0)+':'+String(s%60).padStart(2,'0')};
 function regen(){if(S.h<5){const n=Math.floor((now()-S.ht)/R);if(n>0){S.h=Math.min(5,S.h+n);S.ht=S.h>=5?0:S.ht+n*R;save()}}else S.ht=0}
 const hl=()=>'♥ '+S.h+(S.h<5?' · '+fm(S.ht+R-now()):'');
-setInterval(()=>{regen();$('#hh').textContent=hl();$('#hr').textContent='♥ '+S.h},1000);
+setInterval(()=>{ $('#hh').textContent='♥ '+S.h; $('#hr').textContent='♥ '+S.h; }, 1000);
 let AC;const beep=(f,d=.12,t='sine')=>{try{if(SP.fx===0)return;AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.12,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}};
 const good=()=>{beep(660,.1);setTimeout(()=>beep(880,.16),90)},bad=()=>beep(170,.28,'sawtooth');
 let TA,VO=null,SP={};try{SP=JSON.parse(localStorage['vamos.snd'])||{}}catch(e){}
@@ -481,11 +481,27 @@ function finish(){
   confetti(st);
 }
 function over(){
-  const p=Math.round(L.ok/L.tot*100);S.xp+=L.xp;S.dxp+=L.xp;L.xp=0;save();view('res');$('#fb').className='';
-  $('#rn').textContent=UU().n;$('#rh').textContent='נגמרו הלבבות';$('#rs').innerHTML='';
-  $('#rx').textContent=S.dxp;$('#rp').textContent=p+'%';$('#rk').textContent=S.streak;
-  $('#rm').innerHTML=`<div class="nw">לב חוזר כל 15 דקות · הלב הבא בעוד <bdi dir="ltr">${fm(S.ht+R-now())}</bdi></div><p class="cap">סיום שיעור ממלא את כל הלבבות. אפשר לחזור לחזרה על יחידה קודמת.</p><br>`;
-  $('#ra').style.display=S.h>0?'':'none';
+  const p=Math.round(L.ok/L.tot*100);S.xp+=L.xp;S.dxp+=L.xp;L.xp=0;
+  
+  // איפוס מיידי של הלבבות ל-5 ללא המתנה
+  S.h = 5; 
+  S.ht = 0;
+  save();
+
+  view('res');
+  $('#fb').className='';
+  $('#rn').textContent=UU().n;
+  $('#rh').textContent='נגמרו הלבבות!';
+  $('#rs').innerHTML='';
+  $('#rx').textContent=S.dxp;
+  $('#rp').textContent=p+'%';
+  $('#rk').textContent=S.streak;
+  
+  // הודעה מעודכנת ללא זמנים
+  $('#rm').innerHTML=`<div class="nw">הלבבות אופסו בהצלחה! (5/5)</div><p class="cap">אפשר להמשיך לתרגל מיד.</p><br>`;
+  
+  // השארת כפתור "שוב" פעיל תמיד
+  $('#ra').style.display='';
 }
 $('#ra').onclick=()=>start(L.u);$('#rb').onclick=home;
 function confetti(n){
