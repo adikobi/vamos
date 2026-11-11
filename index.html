@@ -130,6 +130,7 @@ button{cursor:pointer;border:0;background:none}
 @keyframes fly{from{opacity:1;transform:translateY(10px) scale(.7)}30%{transform:translateY(0) scale(1.1)}to{opacity:0;transform:translateY(-70px)}}
 @media(max-width:560px){.row{grid-template-columns:auto 1fr}.row div:last-child{grid-column:1/-1}.opts{grid-template-columns:1fr}.opt{min-height:66px;padding:14px 16px}#fb div{flex-direction:column;align-items:stretch;gap:12px}#fb .bt button{flex:1}#fs{flex:none!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.vs{margin:0 0 40px;background:var(--t);padding:14px 18px}.vs summary{font-weight:800;cursor:pointer}.vs label{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:12px;font-weight:700}.vs select{font:inherit;padding:10px;background:var(--g);border:2px solid var(--i);max-width:62%}.vs p{font-size:14px;margin-top:12px;opacity:.8}
 </style>
 </head>
 <body>
@@ -143,7 +144,7 @@ button{cursor:pointer;border:0;background:none}
   </section>
   <p class="h2">תגי רמה</p>
   <div class="bd" id="bd"></div>
-  <button class="sub" id="pr" style="margin:0 0 40px" disabled>★ תרגול חכם · חזרה על המילים החלשות שלכם</button><p class="h2">מסלול הלימוד</p>
+  <button class="sub" id="pr" style="margin:0 0 40px" disabled>★ תרגול חכם · חזרה על המילים החלשות שלכם</button><details class="vs" id="vs"><summary>🔊 הגדרות קול</summary><label>קול ספרדי<select id="vsel"></select></label><label>מהירות<select id="vr"><option value=".7">איטי</option><option value=".9">רגיל</option><option value="1">מהיר</option></select></label><button class="sub" id="vt" lang="es">▶ ¿Cómo estás? Mucho gusto</button><p>ניתן לבחור ב-Google Voice לקול מקוון איכותי שעובד ב-iPhone ובמחשב, או לבחור בקול מותקן במכשיר.</p></details><p class="h2">מסלול הלימוד</p>
   <div id="units"></div>
   <div class="foot"><span id="tot"></span><button id="rst">איפוס התקדמות</button></div>
   <div class="mega" lang="es" aria-hidden="true">¡Vamos!</div>
@@ -196,7 +197,7 @@ const D=[
 ['לימודים','Estudios','saber = לדעת עובדה · conocer = להכיר אדם או מקום','escuela|בית ספר;profesor|מורה;examen|מבחן;clase|שיעור;pregunta|שאלה;respuesta|תשובה;tarea|שיעורי בית;universidad|אוניברסיטה','tengo un examen mañana|יש לי מבחן מחר;la profesora explica la clase|המורה מסבירה את השיעור;hago la tarea|אני עושה שיעורי בית'],
 ['תחביבים','Aficiones','me gusta + פועל בצורה הבסיסית: me gusta nadar. jugar al + ספורט','música|מוסיקה;película|סרט;fútbol|כדורגל;jugar|לשחק;nadar|לשחות;cocinar|לבשל;pintar|לצייר;deporte|ספורט','me gusta nadar en el mar|אני אוהב לשחות בים;jugamos al fútbol|אנחנו משחקים כדורגל;ella pinta muy bien|היא מציירת מאוד טוב'],
 ['טכנולוגיה','Tecnología','no tengo = אין לי. מילים רבות מאנגלית: internet, wifi','teléfono|טלפון;internet|אינטרנט;contraseña|סיסמה;mensaje|הודעה;pantalla|מסך;cargador|מטען;batería|סוללה;wifi|וויפי','no tengo batería|אין לי סוללה;cuál es la contraseña|מה הסיסמה;envío un mensaje|אני שולח הודעה'],
-['ביגוד','Ropa','llevar = ללבוש וגם לשאת. הבגד והתואר מתאימים במין ובמספר','pantalones|מכנסיים;vestido|שמלה;chaqueta|מעיל קל;falda|חצאית;sombrero|כובע;calcetines|גרביים;abrigo|מעיל;bolsa|תיק','llevo un abrigo|אני לובש מעיל;ella lleva un vestido rojo|היא לובשת שמלה אדומה;los pantalones son nuevos|המכנסיים חדשים'],
+['ביגוד','Ropa','llevar = ללבוש וגם לשאת. הבגד והתואר מתאימים במין ובמספר','pantalones|מכנסיים;vestido|שמלה;chaqueta|מעיל קל;falda|חצאית;sombrero|כובע;calcetines|גרביים;abrigo|מעיל;bolsa|תיק','llevo un abrigo|אני לובש מעיל;ella lleva un vestido rojo|היא לובשת שמלה אדומה;los pantalones son nuevos|המכונית חולצה שחורה'],
 ['בעיר','Ciudad','hay = יש או ישנם, ולא משתנה: hay un banco, hay dos bancos','ciudad|עיר;museo|מוזיאון;parque|פארק;iglesia|כנסייה;mercado|שוק;banco|בנק;farmacia|בית מרקחת;supermercado|סופרמרקט','hay un parque cerca|יש פארק קרוב;el mercado abre temprano|השוק נפתח מוקדם;la farmacia está aquí|בית המרקחת כאן'],
 ['רגשות','Emociones','tengo miedo = אני מפחד (עם tener). estar + רגש = מצב זמני','triste|עצוב;enfadado|כועס;nervioso|עצבני;contento|מרוצה;miedo|פחד;amor|אהבה;sorpresa|הפתעה;aburrido|משועמם','tengo miedo del perro|אני מפחד מהכלב;estoy muy contento|אני מאוד מרוצה;ella está triste hoy|היא עצובה היום'],
 ['תוכניות לעתיד','Futuro','quiero, puedo, debo + פועל בצורה הבסיסית: puedo ayudar','pronto|בקרוב;quiero|אני רוצה;puedo|אני יכול;debo|אני חייב;espero|אני מקווה;plan|תוכנית;vacaciones|חופשה;sueño|חלום','puedo ayudarte mañana|אני יכול לעזור לך מחר;quiero viajar a España|אני רוצה לטוס לספרד;espero verte pronto|אני מקווה לראות אותך בקרוב'],
@@ -206,6 +207,8 @@ const D=[
 ['פעלים לא סדירים','Irregulares','בגוף ראשון הרבה פעלים משתנים: hago, digo, vengo, veo, sé','hacer|לעשות;decir|לומר;poder|להיות מסוגל;querer|לרצות;saber|לדעת;ver|לראות;venir|לבוא;dar|לתת','yo hago la cena|אני מכין ארוחת ערב;ella dice la verdad|היא אומרת את האמת;vengo de la playa|אני בא מהחוף']
 ];
 const U=D.map(([n,e,t,w,s])=>({n,e,t,w:w.split(';').map(x=>x.split('|')),s:s.split(';').map(x=>x.split('|'))}));
+const EX={0: ['bienvenido|ברוך הבא;hasta mañana|להתראות מחר;felicidades|מזל טוב;salud|לבריאות;encantado|שמח להכיר', 'buenos días cómo está usted|בוקר טוב מה שלומך אדוני;hasta mañana mis amigos|להתראות מחר חברים;muchas gracias por todo|תודה רבה על הכול'], 1: ['nombre|שם;país|מדינה;casado|נשוי;soltero|רווק;edad|גיל', 'mi nombre es Ana|השם שלי הוא אנה;soy soltero y vivo en Tel Aviv|אני רווק וגר בתל אביב;ella es de México|היא ממקסיקו'], 2: ['once|אחד עשר;doce|שנים עשר;quince|חמש עשרה;treinta|שלושים;cincuenta|חמישים', 'tengo doce años|יש לי שתים עשרה שנה;son las tres y media|השעה שלוש וחצי;cuesta cincuenta euros|זה עולה חמישים יורו'], 3: ['nieto|נכד;suegra|חמות;sobrino|אחיין;gemelo|תאום;familia|משפחה', 'mi familia es grande|המשפחה שלי גדולה;mi sobrino tiene cinco años|האחיין שלי בן חמש;mis abuelos viven aquí|סבא וסבתא שלי גרים כאן'], 4: ['la niña|הילדה;el niño|הילד;la flor|הפרח;unos amigos|כמה חברים;las casas|הבתים', 'el niño tiene un perro|לילד יש כלב;la mujer lee un libro|האישה קוראת ספר;las casas son grandes|הבתים גדולים'], 5: ['tomate|עגבנייה;ensalada|סלט;azúcar|סוכר;té|תה;jugo|מיץ', 'quiero una ensalada|אני רוצה סלט;el té está frío|התה קר;me gusta el pescado con arroz|אני אוהב דג עם אורז'], 6: ['reserva|הזמנה;cerveza|בירה;tenedor|מזלג;cuchillo|סכין;vaso|כוס', 'tengo una reserva|יש לי הזמנה;quisiera una cerveza|הייתי רוצה בירה;el vaso está sucio|הכוס מלוכלכת'], 7: ['lavar|לשטוף;ayudar|לעזור;limpiar|לנקות;preguntar|לשאול;mirar|להסתכל', 'ella lava los platos|היא שוטפת את הכלים;ayudo a mi madre|אני עוזר לאמא שלי;ellos miran la televisión|הם מסתכלים בטלוויזיה'], 8: ['ocupado|עסוק;listo|מוכן;ausente|נעדר;lleno|מלא;vacío|ריק', 'estoy muy ocupado|אני מאוד עסוק;la sala está llena|האולם מלא;ellos están listos|הם מוכנים'], 9: ['gris|אפור;morado|סגול;rosa|ורוד;marrón|חום [צבע];dorado|מוזהב', 'el cielo es azul|השמיים כחולים;mi gato es gris|החתול שלי אפור;tengo una flor rosa|יש לי פרח ורוד'], 10: ['este|מזרח;oeste|מערב;enfrente|מול;detrás|מאחור;al lado|ליד', 'el banco está enfrente|הבנק נמצא מול;la farmacia está al lado|בית המרקחת נמצא ליד;el museo está detrás de la plaza|המוזיאון נמצא מאחורי הכיכר'], 11: ['equipaje|כבודה;turista|תייר;taxi|מונית;entrada|כרטיס כניסה;puerta de embarque|שער עלייה', 'necesito un taxi|אני צריך מונית;el turista busca el hotel|התייר מחפש את המלון;mi equipaje es pesado|הכבודה שלי כבדה']};
+Object.entries(EX).forEach(([i,[w,s]])=>{const u=U[i];u.w.push(...w.split(";").map(x=>x.split("|")));u.s.push(...s.split(";").map(x=>x.split("|")))});
 const AW=U.flatMap(u=>u.w),AS=U.flatMap(u=>u.s),PR={n:'תרגול חכם',e:'Repaso',t:'חזרה על המילים שפחות שולטים בהן',w:[],s:[]},UU=()=>L.u<0?PR:U[L.u];
 const SEC={0:'יסודות',5:'חיי היומיום',10:'מסע ושטח',14:'בונים שפה',18:'חיים אמיתיים',24:'עבודה ופנאי',28:'עיר ואנשים',32:'שפה מתקדמת'};
 const BG=[[1,'Novato'],[2,'Curioso'],[3,'Viajero'],[5,'Hablante'],[8,'Fluido'],[12,'Maestro'],[16,'Experto'],[20,'Leyenda']];
@@ -226,21 +229,69 @@ const hl=()=>'♥ '+S.h+(S.h<5?' · '+fm(S.ht+R-now()):'');
 setInterval(()=>{regen();$('#hh').textContent=hl();$('#hr').textContent='♥ '+S.h},1000);
 let AC;const beep=(f,d=.12,t='sine')=>{try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.12,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}};
 const good=()=>{beep(660,.1);setTimeout(()=>beep(880,.16),90)},bad=()=>beep(170,.28,'sawtooth');
-let VO=null,TA;
-const pickVoice=()=>{if(!window.speechSynthesis)return null;const vs=speechSynthesis.getVoices().filter(v=>/^es([-_]|$)/i.test(v.lang));if(!vs.length)return VO=null;const sc=v=>(/natural|neural|online|google|premium|enhanced|siri/i.test(v.name)?10:0)+(/es[-_]ES/i.test(v.lang)?3:/es[-_]MX/i.test(v.lang)?2:/es[-_]US/i.test(v.lang)?1:0);vs.sort((x,y)=>sc(y)-sc(x));return VO=vs[0]};
-if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
-const say=t=>{
-  if(window.speechSynthesis)speechSynthesis.cancel();if(TA){TA.pause();TA=null}
-  const v=VO||pickVoice();
-  if(v){const u=new SpeechSynthesisUtterance(t);u.voice=v;u.lang=v.lang;u.rate=.85;speechSynthesis.speak(u);return}
-  /* no Spanish voice installed: fall back to an online Spanish voice */
-  TA=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(t));
-  TA.onerror=()=>{if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=.85;speechSynthesis.speak(u)}};
-  TA.play().catch(TA.onerror)
+let TA,VO=null,SP={};try{SP=JSON.parse(localStorage['vamos.snd'])||{}}catch(e){}
+const saveSP=()=>{try{localStorage['vamos.snd']=JSON.stringify(SP)}catch(e){}};
+const QW=/^(qué|quién|dónde|cuándo|cómo|cuál|cuánto|cuántos|adónde|por qué|para qué|con quién)(\s|$)/i;
+const esVoices=()=>window.speechSynthesis?speechSynthesis.getVoices().filter(v=>/^es([-_]|$)/i.test(v.lang)):[];
+const vscore=v=>(SP.v===v.voiceURI?100:0)+(/premium|enhanced|natural|neural|mejorada/i.test(v.name+v.voiceURI)?20:0)+(/siri/i.test(v.name+v.voiceURI)?15:0)+(/google|online/i.test(v.name)?8:0)+(/m[oó]nica|paulina|jorge|juan|diego|ang[eé]lica|marisol|soledad|francisca|monica/i.test(v.name)?4:0)+(/compact/i.test(v.voiceURI)?-2:0)+(/es[-_]ES/i.test(v.lang)?3:/es[-_]MX/i.test(v.lang)?2:/es[-_](US|419)/i.test(v.lang)?1:0);
+const pickVoice=()=>{
+  if(!SP.v) SP.v = 'google_online'; // ברירת מחדל: קול אונליין של גוגל
+  const vs=esVoices().sort((a,b)=>vscore(b)-vscore(a));
+  return VO=(SP.v==='google_online'?null:(vs.find(v=>v.voiceURI===SP.v)||vs[0]||null));
 };
+
+const refreshVoices=()=>{pickVoice();voiceUI()};
+if(window.speechSynthesis){
+  pickVoice();
+  speechSynthesis.onvoiceschanged=refreshVoices;
+  [300,1000,2500].forEach(t=>setTimeout(refreshVoices,t));
+}
+
+/* iOS: unlock audio context on touch */
+addEventListener('touchend',()=>{
+  try{
+    if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}
+    if(!TA){TA=new Audio();TA.play().catch(()=>{})}
+  }catch(e){}
+},{once:true});
+
+const speakNative=(t,v)=>{const u=new SpeechSynthesisUtterance(t);if(v)u.voice=v;u.lang=v?v.lang:'es-ES';u.rate=SP.r||.9;u.pitch=1;speechSynthesis.speak(u)};
+const say=t=>{
+  if(TA){TA.pause();TA=null}
+  const s=QW.test(t)?'¿'+t+'?':t;
+  const sy=window.speechSynthesis;
+  
+  // אם נבחר Google Voice אונליין (או בברירת מחדל)
+  if(!SP.v || SP.v==='google_online'){
+    if(sy)sy.cancel();
+    TA=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(s));
+    TA.play().catch(e=>console.log(e));
+    return;
+  }
+  
+  // קול מותקן מקומי
+  if(sy)sy.cancel();
+  const v=pickVoice();
+  if(v)return void setTimeout(()=>speakNative(s,v),70);
+  
+  // fallback ל-Google במידה והקול המקומי נכשל
+  TA=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(s));
+  TA.play().catch(e=>console.log(e));
+};
+
+function voiceUI(){
+  const vs=esVoices().sort((a,b)=>vscore(b)-vscore(a)),sel=$('#vsel');
+  let opts='<option value="google_online">🌐 Google Voice (אינטרנט - מומלץ ל-iPhone)</option>';
+  opts+=vs.map(v=>`<option value="${v.voiceURI}">${v.name} (${v.lang})</option>`).join('');
+  sel.innerHTML=opts;
+  sel.value=SP.v||'google_online';
+  $('#vr').value=SP.r||.9;
+}
+
 const count=(el,to,ms=900,sf='')=>{const t0=performance.now();(function f(n){const p=Math.min((n-t0)/ms,1);el.textContent=Math.round(to*(1-Math.pow(1-p,3)))+sf;if(p<1)requestAnimationFrame(f)})(t0)};
 const lvl=x=>Math.floor(x/100)+1,bn=l=>BG.filter(b=>b[0]<=l).pop()[1];
-const pct=u=>Math.round(u.w.reduce((a,w)=>a+(S.m[w[0]]||0),0)/(u.w.length*3)*100);
+const pct=u=>Math.min(100,Math.round(u.w.reduce((a,w)=>a+(S.m[w[0]]||0),0)/(Math.min(u.w.length,12)*3)*100));
+
 /* HOME */
 function home(){
   regen();view('home');const lv=lvl(S.xp),cur=U.findIndex((u,i)=>!S.c[i]);
@@ -254,16 +305,19 @@ function home(){
   $('#units').innerHTML=U.map((u,i)=>{const p=pct(u),lk=i&&!S.c[i-1],s=S.c[i]||0;
     return(SEC[i]?`<p class="h2 sec">${SEC[i]}</p>`:'')+`<button class="row${lk?' lk':''}${i===cur?' cur':''}" data-i="${i}"${lk?' disabled':''} style="animation-delay:${i%5*60}ms"><b>${String(i+1).padStart(2,'0')}</b><h3>${u.n}<small lang="es">${u.e}</small></h3><div><em>${lk?'נעול':'★'.repeat(s)+'☆'.repeat(3-s)+' '+p+'%'}</em><div class="bar"><i style="width:${p}%"></i></div></div></button>`}).join('');
   $('#tot').textContent='סה״כ '+S.xp+' XP · '+Object.values(S.m).filter(v=>v>=2).length+' מילים נלמדו';$('#pr').disabled=Object.keys(S.m).length<4;
+  voiceUI();
 }
+$('#vs').ontoggle=voiceUI;$('#vsel').onchange=e=>{SP.v=e.target.value;saveSP();say('hola, mucho gusto')};$('#vr').onchange=e=>{SP.r=+e.target.value;saveSP();say('hola, mucho gusto')};$('#vt').onclick=()=>say('cómo estás, mucho gusto');
 $('#units').onclick=e=>{const r=e.target.closest('.row');if(r&&!r.disabled)start(+r.dataset.i)};
 $('#pr').onclick=()=>start(-1);
 $('#rst').onclick=()=>{if(confirm('למחוק את כל ההתקדמות?')){S={xp:0,streak:0,last:'',day:TD,dxp:0,m:{},h:5,ht:0,c:{}};save();home()}};
+
 /* LESSON */
 let L;
 function start(i){
   regen();if(S.h<=0){L={u:i,xp:0,ok:0,tot:1};return over()}
   if(i<0)PR.w=Object.keys(S.m).map(k=>AW.find(x=>x[0]===k)).filter(Boolean).sort((a,b)=>S.m[a[0]]-S.m[b[0]]).slice(0,8);
-  const u=i<0?PR:U[i];const pw=sh(u.w).sort((a,b)=>(S.m[a[0]]||0)-(S.m[b[0]]||0)).slice(0,8);let q=sh(pw).map((w,k)=>({w,t:T[k%4]})).concat(sh(u.s).slice(0,3).map((w,k)=>({w,s:1,t:k%2?'be':'bh'})));
+  const u=i<0?PR:U[i];const pw=sh(u.w).sort((a,b)=>(S.m[a[0]]||0)-(S.m[b[0]]||0)).slice(0,8);let q=sh(pw).map((w,k)=>({w,t:T[k%4]})).concat(sh(u.s).slice(0,4).map((w,k)=>({w,s:1,t:k%2?'be':'bh'})));
   if(u.w.length>=4){const ws=sh(pw).slice(0,Math.min(5,pw.length));q.push({w:ws[0],ws,p:1,t:'pairs'})}
   L={u:i,q:sh(q),tot:q.length,done:0,ok:0,combo:0,xp:0,miss:[],seen:new Set(),lock:false};
   view('lesson');$('#cmb').textContent='';next();
@@ -273,7 +327,8 @@ function next(){
   $('#pb').style.width=L.done/L.tot*100+'%';$('#hr').textContent='♥ '+S.h;
   if(S.h<=0)return over();if(!L.q.length)return finish();
   const q=L.q[0],w=q.w;let t=q.t;
-  if(t==='listen'&&!window.speechSynthesis)t='es2he';if(t==='cloze'&&!q.c){const x=AS.find(x=>x[0].split(' ').includes(w[0]));if(x){const tk=x[0].split(' ');q.c={t:tk,h:x[1],i:tk.indexOf(w[0])}}else t='he2es'}q.t=t;
+  if(t==='listen'&&!window.speechSynthesis&&SP.v!=='google_online')t='es2he';
+  if(t==='cloze'&&!q.c){const x=sh(AS.filter(x=>x[0].split(' ').includes(w[0])))[0];if(x){const tk=x[0].split(' ');q.c={t:tk,h:x[1],i:tk.indexOf(w[0])}}else t='he2es'}q.t=t;
   let h='';
   if(q.s){
     const be=t==='be',tg=(be?w[0]:w[1]).split(' ');
@@ -282,7 +337,7 @@ function next(){
     const d=be?'dir="ltr" lang="es"':'dir="rtl"';
     h=`<p class="cap">${be?'בנו את המשפט בספרדית':'בנו את המשפט בעברית'}</p><h2 class="big sm"${be?'':' lang="es"'}>${be?w[1]:w[0]}${be?'':'<button class="spk" data-s aria-label="השמעה">▶</button>'}</h2><div class="ans" id="an" ${d}></div><div class="bank" id="bk" ${d}></div><button class="sub" id="sb">בדיקה</button>`;
   }else{
-    q.o=sh([w,...sh(U.flatMap(u=>u.w).filter(x=>x[0]!==w[0])).slice(0,3)]);
+    {const sn=new Set([w[0],w[1]]);q.o=sh([w,...sh(AW).filter(x=>!sn.has(x[0])&&!sn.has(x[1])&&sn.add(x[0])&&sn.add(x[1])).slice(0,3)])}
     const es=t==='he2es'||t==='cloze',opts=()=>`<div class="opts">${q.o.map((x,i)=>`<button class="opt" data-i="${i}"><kbd>${i+1}</kbd><span${es?' lang="es"':''}>${x[es?0:1]}</span></button>`).join('')}</div>`;
     if(t==='es2he')h=`<p class="cap">מה המשמעות בעברית?</p><h2 class="big" lang="es">${w[0]}<button class="spk" data-s aria-label="השמעה">▶</button></h2>${opts()}`;
     if(t==='he2es')h=`<p class="cap">איך אומרים בספרדית?</p><h2 class="big">${w[1]}</h2>${opts()}`;
@@ -323,18 +378,15 @@ function pick(i){const q=L.q[0],ok=q.o[i][0]===q.w[0];
   $$('.opt').forEach((b,k)=>{b.disabled=true;if(q.o[k][0]===q.w[0])b.classList.add('ok');else if(k===i)b.classList.add('no')});grade(ok)}
 function check(){const q=L.q[0];let ok;
   if(q.s){const B=L.b;if(!B.an.length)return;ok=norm(B.an.map(i=>B.tok[i]).join(' '))===norm(B.tg.join(' '));$('#an').classList.add(ok?'ok':'no')}
-  
   else return;
   grade(ok)}
 function hint(){const q=L.q[0],w=q.w;if(L.hn)return;L.hn=q.h=1;$('#hb').disabled=true;let x;
   if(q.s){const B=L.b;let p=0;while(p<B.an.length&&B.tok[B.an[p]]===B.tg[p])p++;B.an=B.an.slice(0,p);
     const i=B.tok.findIndex((t,j)=>t===B.tg[p]&&!B.an.includes(j));if(i>=0)B.an.push(i);rb();x=`הוצבו ${B.an.length} מילים נכונות מתוך ${B.tg.length}`}
-  
   else{$$('.opt').filter((b,k)=>q.o[k][0]!==w[0]).slice(0,2).forEach(b=>{b.disabled=true;b.classList.add('gone')});x='הוסרו שתי תשובות שגויות'}
   $('#hn').innerHTML=`<span><b>רמז:</b> ${UU().t}<br>${x}</span><button class="spk sm" data-s aria-label="השמעה">▶</button>`;say(w[0])}
 function reveal(){const q=L.q[0],w=q.w;
   if(q.s){const B=L.b;B.an=[];B.tg.forEach(t=>B.an.push(B.tok.findIndex((x,j)=>x===t&&!B.an.includes(j))));rb()}
-  
   else $$('.opt').forEach((b,k)=>{b.disabled=true;if(q.o[k][0]===w[0])b.classList.add('ok')});
   grade(0,1)}
 function grade(ok,sk){
@@ -363,6 +415,7 @@ addEventListener('keydown',e=>{
   if(e.key==='Enter'){e.preventDefault();L.lock?next():check()}
   else if(!L.lock&&/^[1-4]$/.test(e.key)){const q=L.q[0];if(q&&q.o&&q.o[e.key-1]&&!$$('.opt')[e.key-1].disabled)pick(+e.key-1)}
 });
+
 /* RESULT */
 function finish(){
   const p=Math.round(L.ok/L.tot*100),bonus=p===100?20:0,old=S.c[L.u]||0,lv0=lvl(S.xp);L.xp+=bonus;
