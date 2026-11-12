@@ -152,7 +152,19 @@ button{cursor:pointer;border:0;background:none}
   </section>
   <p class="h2">תגי רמה</p>
   <div class="bd" id="bd"></div>
-  <button class="sub" id="pr" style="margin:0 0 40px" disabled>★ תרגול חכם · חזרה על המילים החלשות שלכם</button><details class="vs" id="vs"><summary>🔊 הגדרות קול</summary><label>קול ספרדי<select id="vsel"></select></label><label>מהירות<select id="vr"><option value=".7">איטי</option><option value=".9">רגיל</option><option value="1">מהיר</option></select></label><label>צלילי אפקט<select id="vm"><option value="1">פעילים</option><option value="0">כבויים</option></select></label><button class="sub" id="vt" lang="es">▶ ¿Cómo estás? Mucho gusto</button><p>באייפון הקול נשמע יותר טבעי עם קול משופר: הגדרות › נגישות › תוכן מדובר › קולות › Español › בחרו קול עם הסימון Premium או משופר (למשל Mónica, Paulina או Jorge), ורעננו את הדף.</p></details><p class="h2">מסלול הלימוד</p>
+  <button class="sub" id="pr" style="margin:0 0 40px" disabled>★ תרגול חכם · חזרה על המילים החלשות שלכם</button>
+  <details class="vs" id="vs">
+    <summary>🔊 הגדרות קול <span id="vcnt" style="font-weight:500;opacity:.7;font-size:14px"></span></summary>
+    <label>קול ספרדי<select id="vsel"></select></label>
+    <label>מהירות<select id="vr"><option value=".7">איטי</option><option value=".9">רגיל</option><option value="1">מהיר</option></select></label>
+    <label>צלילי אפקט<select id="vm"><option value="1">פעילים</option><option value="0">כבויים</option></select></label>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="sub" id="vt" lang="es" style="margin:0;flex:1">▶ ¿Cómo estás? Mucho gusto</button>
+      <button class="sub" id="vref" style="margin:0;width:auto;padding:16px 18px;background:var(--g);color:var(--i);border:2px solid var(--i)" title="רענון רשימת קולות">↻</button>
+    </div>
+    <p>באייפון: אם הורדתם קולות משופרים (הגדרות › נגישות › תוכן מדובר › קולות › Español), לחצו על כפתור ההשמעה <b>▶</b> או על <b>↻</b> כדי שהמערכת תטען אותם, או בחרו ב-<b>Google Translate (מקוון)</b>.</p>
+  </details>
+  <p class="h2">מסלול הלימוד</p>
   <div id="units"></div>
   <div class="foot"><span id="tot"></span><button id="rst">איפוס התקדמות</button></div>
   <div class="mega" lang="es" aria-hidden="true">¡Vamos!</div>
@@ -188,7 +200,7 @@ const D=[
 ['ser ו-estar','Ser y estar','ser = זהות ותכונה קבועה. estar = מצב זמני ומיקום','ser|להיות (קבוע);estar|להיות (מצב או מקום);soy|אני (קבוע);estoy|אני נמצא;es|הוא או היא;está|הוא נמצא;eres|אתה (קבוע);estás|אתה נמצא;somos|אנחנו (קבוע);estamos|אנחנו נמצאים;feliz|שמח;cansado|עייף','yo estoy cansado|אני עייף;ella es doctora|היא רופאה;tú eres mi amigo|אתה החבר שלי;estamos en casa|אנחנו בבית'],
 ['צבעים ותיאור','Colores','התואר בא אחרי שם העצם ומתאים לו במין וביחס למספר: casa blanca, casas blancas','rojo|אדום;azul|כחול;verde|ירוק;blanco|לבן;grande|גדול;pequeño|קטן;amarillo|צהוב;negro|שחור;naranja|כתום;bonito|יפה;nuevo|חדש;viejo|ישן','la casa es blanca|הבית לבן;tengo un coche rojo|יש לי מכונית אדומה;el coche es nuevo|המכונית חדשה;tengo una camisa negra|יש לי חולצה שחורה'],
 ['לשאול כיוונים','Direcciones','¿dónde está…? = איפה נמצא… · gire = פנה (רשמי)','a la derecha|ימינה;a la izquierda|שמאלה;todo recto|ישר;cerca|קרוב;lejos|רחוק;la esquina|הפינה;calle|רחוב;plaza|כיכר;puente|גשר;norte|צפון;sur|דרום;aquí|כאן','gire a la derecha|פנה ימינה;el hotel está cerca|המלון קרוב;la plaza está lejos|הכיכר רחוקה;gire en la calle|פנה ברחוב'],
-['נסיעות','Viaje','billete בספרד, boleto באמריקה הלטינית. necesito = אני צריך','aeropuerto|שדה תעופה;hotel|מלון;playa|חוף ים;billete|כרטיס;tren|רכבת;mapa|מפה;maleta|מזוודה;pasaporte|דרכון;autobús|אוטובוס;vuelo|טיסה;coche|מכונית','necesito un billete de tren|אני צריך כרטיס רכבת;dónde está el aeropuerto|איפה שדה התעופה;el vuelo sale hoy|הטיסה יוצאת היום;mi maleta es azul|המזוודה שלי כחולה'],
+['נסיעות','Viaje','billete בספרד, boleto באמריקה הלטינית. necesito = אני צריך','aeropuerto|שדה תעופה;hotel|מלון;playa|חוף ים;billete|כרטיס;tren|רכבת;mapa|מפה;maleta|מזוודה;pasaporte|דרכון;autobús|אוטובוס;vuelo|טיסה;coche|מכונית','necesito un billete de tren|אני צריך כרטיס רחבת;dónde está el aeropuerto|איפה שדה התעופה;el vuelo sale hoy|הטיסה יוצאת היום;mi maleta es azul|המזוודה שלי כחולה'],
 ['ימים וזמן','Tiempo','ימות השבוע בספרדית באות קטנה, בזכר: el lunes. voy a = אני הולך ל…','lunes|יום שני;martes|יום שלישי;hoy|היום;mañana|מחר;ayer|אתמול;semana|שבוע;miércoles|יום רביעי;viernes|יום שישי;domingo|יום ראשון;año|שנה;mes|חודש;día|יום','hoy es lunes|היום יום שני;mañana voy a la playa|מחר אני הולך לחוף;el domingo descanso|ביום ראשון אני נח;un año tiene doce meses|בשנה יש שנים עשר חודשים'],
 ['קניות','Compras','¿cuánto cuesta? = כמה זה עולה? esta/este = הזאת/הזה','caro|יקר;barato|זול;dinero|כסף;tienda|חנות;cuánto cuesta|כמה זה עולה;tarjeta|כרטיס אשראי;pagar|לשלם;efectivo|מזומן;precio|מחיר;rebajas|מבצעים;camisa|חולצה;zapatos|נעליים','cuánto cuesta esta camisa|כמה עולה החולצה הזאת;es muy barato|זה מאוד זול;pago con tarjeta|אני משלם בכרטיס;los zapatos son caros|הנעליים יקרות'],
 ['חירום','Emergencias','llame a… = תתקשר ל… (רשמי). ¡Socorro! ו-¡Ayuda! = הצילו','ayuda|עזרה;socorro|הצילו;policía|משטרה;ambulancia|אמבולנס;peligro|סכנה;rápido|מהר;fuego|אש;ladrón|גנב;herido|פצוע;urgente|דחוף;cuidado|זהירות;salida|יציאה','llame a la policía|תתקשר למשטרה;necesito ayuda rápido|אני צריך עזרה מהר;hay fuego|יש אש;es urgente|זה דחוף'],
@@ -279,28 +291,129 @@ const hl=()=>'♥ '+S.h+(S.h<5?' · '+fm(S.ht+R-now()):'');
 setInterval(()=>{ $('#hh').textContent='♥ '+S.h; $('#hr').textContent='♥ '+S.h; }, 1000);
 let AC;const beep=(f,d=.12,t='sine')=>{try{if(SP.fx===0)return;AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.12,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}};
 const good=()=>{beep(660,.1);setTimeout(()=>beep(880,.16),90)},bad=()=>beep(170,.28,'sawtooth');
-let TA,VO=null,SP={};try{SP=JSON.parse(localStorage['vamos.snd'])||{}}catch(e){}
+
+/* === מערכת קולות משודרגת ותומכת iOS === */
+let TA,VO=null,SP={},lastVCount=-1,unlocked=false;
+try{SP=JSON.parse(localStorage['vamos.snd'])||{}}catch(e){}
 const saveSP=()=>{try{localStorage['vamos.snd']=JSON.stringify(SP)}catch(e){}};
 const QW=/^(qué|quién|dónde|cuándo|cómo|cuál|cuánto|cuántos|adónde|por qué|para qué|con quién)(\s|$)/i;
-const esVoices=()=>window.speechSynthesis?speechSynthesis.getVoices().filter(v=>/^es([-_]|$)/i.test(v.lang)):[];
-const vscore=v=>(SP.v===v.voiceURI?100:0)+(/premium|enhanced|natural|neural|mejorada/i.test(v.name+v.voiceURI)?20:0)+(/siri/i.test(v.name+v.voiceURI)?15:0)+(/google|online/i.test(v.name)?8:0)+(/m[oó]nica|paulina|jorge|juan|diego|ang[eé]lica|marisol|soledad|francisca|monica/i.test(v.name)?4:0)+(/compact/i.test(v.voiceURI)?-2:0)+(/es[-_]ES/i.test(v.lang)?3:/es[-_]MX/i.test(v.lang)?2:/es[-_](US|419)/i.test(v.lang)?1:0);
-const pickVoice=()=>{const vs=esVoices().sort((a,b)=>vscore(b)-vscore(a));return VO=vs[0]||null};
-if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;[300,1000,2500].forEach(t=>setTimeout(pickVoice,t))}
-/* iOS: speech must be unlocked by a first user gesture */
-addEventListener('touchend',()=>{try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}},{once:true});
-const speakNative=(t,v)=>{const u=new SpeechSynthesisUtterance(t);if(v)u.voice=v;u.lang=v?v.lang:'es-ES';u.rate=SP.r||.9;u.pitch=1;speechSynthesis.speak(u)};
+
+// מזהה קולות ספרדית גם לפי קוד שפה (es, spa) וגם לפי שמות קולות מובנים של iOS
+const ES_NAMES=/(m[oó]nica|paulina|jorge|juan|diego|ang[eé]lica|marisol|soledad|francisca|carlos|ximena|luciana|isabela|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley)/i;
+const esVoices=()=>{
+  if(!window.speechSynthesis)return[];
+  const all=speechSynthesis.getVoices();
+  return all.filter(v=>{
+    const l=(v.lang||'').replace('_','-').toLowerCase();
+    if(/^es(-|$)|^spa(-|$)/.test(l))return true;
+    if(/spanish|espa[nñ]ol/i.test(v.name+v.voiceURI))return true;
+    return false;
+  });
+};
+
+const isEnhanced=v=>/premium|enhanced|natural|neural|mejorada|siri/i.test(v.name+' '+v.voiceURI);
+
+const vscore=v=>
+  (SP.v===v.voiceURI?100:0)+
+  (/premium|enhanced|natural|neural|mejorada/i.test(v.name+v.voiceURI)?25:0)+
+  (/siri/i.test(v.name+v.voiceURI)?18:0)+
+  (/google|online/i.test(v.name)?10:0)+
+  (ES_NAMES.test(v.name)?5:0)+
+  (/compact/i.test(v.voiceURI)?-5:0)+
+  (/es[-_]ES/i.test(v.lang)?3:/es[-_]MX/i.test(v.lang)?2:/es[-_](US|419)/i.test(v.lang)?1:0);
+
+const pickVoice=()=>{
+  const vs=esVoices().sort((a,b)=>vscore(b)-vscore(a));
+  VO=vs[0]||null;
+  if(vs.length!==lastVCount){
+    lastVCount=vs.length;
+    if($('#vs')&&$('#vs').open)voiceUI();
+    if($('#vcnt'))$('#vcnt').textContent=`(${vs.length+1} זמינים)`;
+  }
+  return VO;
+};
+
+// שחרור נעילת קולות iOS כדי לחשוף קולות Premium/Enhanced שהורדו למכשיר
+function unlockIOSVoices(){
+  if(!window.speechSynthesis)return;
+  if(!unlocked){
+    unlocked=true;
+    try{
+      const u=new SpeechSynthesisUtterance(' ');
+      u.lang='es-ES';
+      u.volume=0;
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  pickVoice();
+  [150,400,900,1800].forEach(t=>setTimeout(pickVoice,t));
+}
+
+if(window.speechSynthesis){
+  pickVoice();
+  speechSynthesis.onvoiceschanged=()=>{pickVoice();if($('#vs')&&$('#vs').open)voiceUI()};
+  [200,600,1200,2500,4500].forEach(t=>setTimeout(pickVoice,t));
+}
+addEventListener('touchend',unlockIOSVoices,{once:true,passive:true});
+addEventListener('click',unlockIOSVoices,{once:true});
+
+const speakNative=(t,v)=>{
+  const u=new SpeechSynthesisUtterance(t);
+  if(v){
+    u.voice=v;
+    u.lang=(v.lang||'es-ES').replace('_','-');
+  }else{
+    u.lang='es-ES';
+  }
+  u.rate=SP.r||.9;
+  u.pitch=1;
+  speechSynthesis.speak(u);
+};
+
+const playGoogleTTS=(s,sy)=>{
+  TA=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(s));
+  TA.playbackRate=Math.min(1.3,Math.max(.75,(SP.r||.9)*1.05));
+  TA.onerror=()=>{if(sy)speakNative(s,null)};
+  TA.play().catch(()=>{if(sy)speakNative(s,null)});
+};
+
 const say=t=>{
   if(TA){TA.pause();TA=null}
-  const s=QW.test(t)?'¿'+t+'?':t,sy=window.speechSynthesis,v=sy&&pickVoice();
+  const s=QW.test(t)?'¿'+t+'?':t,sy=window.speechSynthesis;
   if(sy)sy.cancel();
-  if(v)return void setTimeout(()=>speakNative(s,v),70);
-  /* no Spanish voice installed: online native Spanish voice, then lang-only fallback */
-  TA=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(s));
-  TA.onerror=()=>{if(sy)speakNative(s,null)};TA.play().catch(TA.onerror)
+  // אם המשתמש בחר מפורשות בקול המקוון של גוגל
+  if(SP.v==='__google__'){
+    return playGoogleTTS(s,sy);
+  }
+  const v=sy&&pickVoice();
+  if(v)return void setTimeout(()=>speakNative(s,v),60);
+  playGoogleTTS(s,sy);
 };
-function voiceUI(){const vs=esVoices().sort((a,b)=>vscore(b)-vscore(a)),sel=$('#vsel');
-  sel.innerHTML=vs.length?vs.map(v=>`<option value="${v.voiceURI}">${v.name} (${v.lang})</option>`).join(''):'<option>לא נמצא קול ספרדי · נשתמש בקול מקוון</option>';
-  if(VO)sel.value=VO.voiceURI;$('#vr').value=SP.r||.9;$('#vm').value=SP.fx===0?'0':'1'}
+
+function voiceUI(){
+  const vs=esVoices().sort((a,b)=>vscore(b)-vscore(a)),sel=$('#vsel');
+  const opts=vs.map(v=>{
+    const tag=isEnhanced(v)?' ★ משופר':'';
+    const cleanLang=(v.lang||'').replace('_','-');
+    return `<option value="${v.voiceURI}">${v.name}${tag} (${cleanLang})</option>`;
+  });
+  // הוספת Google Translate כאופציה קבועה גם באייפון וגם במחשב
+  opts.push('<option value="__google__">Google Translate (מקוון · טבעי)</option>');
+  sel.innerHTML=opts.join('');
+  if(SP.v==='__google__'){
+    sel.value='__google__';
+  }else if(SP.v && vs.some(v=>v.voiceURI===SP.v)){
+    sel.value=SP.v;
+  }else if(VO){
+    sel.value=VO.voiceURI;
+  }else{
+    sel.value='__google__';
+  }
+  $('#vr').value=SP.r||.9;
+  $('#vm').value=SP.fx===0?'0':'1';
+  if($('#vcnt'))$('#vcnt').textContent=`(${vs.length+1} זמינים)`;
+}
+
 const count=(el,to,ms=900,sf='')=>{const t0=performance.now();(function f(n){const p=Math.min((n-t0)/ms,1);el.textContent=Math.round(to*(1-Math.pow(1-p,3)))+sf;if(p<1)requestAnimationFrame(f)})(t0)};
 const lvl=x=>Math.floor(x/100)+1,bn=l=>BG.filter(b=>b[0]<=l).pop()[1];
 const pct=u=>Math.min(100,Math.round(u.w.reduce((a,w)=>a+(S.m[w[0]]||0),0)/(Math.min(u.w.length,12)*3)*100));
@@ -318,7 +431,12 @@ function home(){
     return(SEC[i]?`<p class="h2 sec">${SEC[i]}</p>`:'')+`<button class="row${lk?' lk':''}${i===cur?' cur':''}" data-i="${i}"${lk?' disabled':''} style="animation-delay:${i%5*60}ms"><b>${String(i+1).padStart(2,'0')}</b><h3>${u.n}<small lang="es">${u.e}</small></h3><div><em>${lk?'נעול':'★'.repeat(s)+'☆'.repeat(3-s)+' '+p+'%'}</em><div class="bar"><i style="width:${p}%"></i></div></div></button>`}).join('');
   $('#tot').textContent='סה״כ '+S.xp+' XP · '+Object.values(S.m).filter(v=>v>=2).length+' מילים נלמדו';$('#pr').disabled=Object.keys(S.m).length<4;
 }
-$('#vs').ontoggle=voiceUI;$('#vsel').onchange=e=>{SP.v=e.target.value;saveSP();say('hola, mucho gusto')};$('#vr').onchange=e=>{SP.r=+e.target.value;saveSP();say('hola, mucho gusto')};$('#vt').onclick=()=>say('cómo estás, mucho gusto');$('#vm').onchange=e=>{SP.fx=+e.target.value;saveSP();good()};
+$('#vs').ontoggle=()=>{unlockIOSVoices();voiceUI()};
+$('#vref').onclick=()=>{unlockIOSVoices();voiceUI();good()};
+$('#vsel').onchange=e=>{SP.v=e.target.value;saveSP();say('hola, mucho gusto')};
+$('#vr').onchange=e=>{SP.r=+e.target.value;saveSP();say('hola, mucho gusto')};
+$('#vt').onclick=()=>{unlockIOSVoices();voiceUI();say('cómo estás, mucho gusto')};
+$('#vm').onchange=e=>{SP.fx=+e.target.value;saveSP();good()};
 $('#units').onclick=e=>{const r=e.target.closest('.row');if(r&&!r.disabled)start(+r.dataset.i)};
 $('#pr').onclick=()=>start(-1);
 $('#rst').onclick=()=>{if(confirm('למחוק את כל ההתקדמות?')){S={xp:0,streak:0,last:'',day:TD,dxp:0,m:{},h:5,ht:0,c:{}};save();home()}};
@@ -482,8 +600,6 @@ function finish(){
 }
 function over(){
   const p=Math.round(L.ok/L.tot*100);S.xp+=L.xp;S.dxp+=L.xp;L.xp=0;
-  
-  // איפוס מיידי של הלבבות ל-5 ללא המתנה
   S.h = 5; 
   S.ht = 0;
   save();
@@ -496,11 +612,7 @@ function over(){
   $('#rx').textContent=S.dxp;
   $('#rp').textContent=p+'%';
   $('#rk').textContent=S.streak;
-  
-  // הודעה מעודכנת ללא זמנים
   $('#rm').innerHTML=`<div class="nw">הלבבות אופסו בהצלחה! (5/5)</div><p class="cap">אפשר להמשיך לתרגל מיד.</p><br>`;
-  
-  // השארת כפתור "שוב" פעיל תמיד
   $('#ra').style.display='';
 }
 $('#ra').onclick=()=>start(L.u);$('#rb').onclick=home;
