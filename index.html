@@ -371,10 +371,18 @@ const speakNative=(t,v)=>{
 };
 
 const playGoogleTTS=(s,sy)=>{
-  TA=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(s));
-  TA.playbackRate=Math.min(1.3,Math.max(.75,(SP.r||.9)*1.05));
-  TA.onerror=()=>{if(sy)speakNative(s,null)};
-  TA.play().catch(()=>{if(sy)speakNative(s,null)});
+  let fellBack=false;
+  const fallback=()=>{
+    if(fellBack)return;
+    fellBack=true;
+    if(sy)speakNative(s,null);
+  };
+  const a=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(s));
+  TA=a;
+  a.playbackRate=Math.min(1.3,Math.max(.75,(SP.r||.9)*1.05));
+  a.onerror=fallback;
+  const p=a.play();
+  if(p&&p.catch)p.catch(fallback);
 };
 
 const say=t=>{
@@ -397,8 +405,8 @@ function voiceUI(){
     const cleanLang=(v.lang||'').replace('_','-');
     return `<option value="${v.voiceURI}">${v.name}${tag} (${cleanLang})</option>`;
   });
-  // הוספת Google Translate כאופציה קבועה גם באייפון וגם במחשב
-  opts.push('<option value="__google__">Google Translate (מקוון · טבעי)</option>');
+  //  Google Translate 
+  opts.push('<option value="__google__">Google Translate</option>');
   sel.innerHTML=opts.join('');
   if(SP.v==='__google__'){
     sel.value='__google__';
@@ -435,7 +443,11 @@ $('#vs').ontoggle=()=>{unlockIOSVoices();voiceUI()};
 $('#vref').onclick=()=>{unlockIOSVoices();voiceUI();good()};
 $('#vsel').onchange=e=>{SP.v=e.target.value;saveSP();say('hola, mucho gusto')};
 $('#vr').onchange=e=>{SP.r=+e.target.value;saveSP();say('hola, mucho gusto')};
-$('#vt').onclick=()=>{unlockIOSVoices();voiceUI();say('cómo estás, mucho gusto')};
+$('#vt').onclick=()=>{
+  if(SP.v!=='__google__')unlockIOSVoices();
+  voiceUI();
+  say('cómo estás, mucho gusto');
+};
 $('#vm').onchange=e=>{SP.fx=+e.target.value;saveSP();good()};
 $('#units').onclick=e=>{const r=e.target.closest('.row');if(r&&!r.disabled)start(+r.dataset.i)};
 $('#pr').onclick=()=>start(-1);
