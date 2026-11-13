@@ -338,6 +338,7 @@ function unlockIOSVoices(){
   if(!window.speechSynthesis)return;
   if(!unlocked){
     unlocked=true;
+    if(SP.v==='__google__')return;
     try{
       const u=new SpeechSynthesisUtterance(' ');
       u.lang='es-ES';
@@ -377,12 +378,23 @@ const playGoogleTTS=(s,sy)=>{
     fellBack=true;
     if(sy)speakNative(s,null);
   };
-  const a=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(s));
-  TA=a;
-  a.playbackRate=Math.min(1.3,Math.max(.75,(SP.r||.9)*1.05));
-  a.onerror=fallback;
-  const p=a.play();
-  if(p&&p.catch)p.catch(fallback);
+  const url='https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q='+encodeURIComponent(s);
+  let tries=0;
+  const attempt=()=>{
+    const a=new Audio(url+(tries?'&r='+tries:''));
+    a.preload='auto';
+    TA=a;
+    a.playbackRate=Math.min(1.3,Math.max(.75,(SP.r||.9)*1.05));
+    const fail=()=>{
+      if(TA!==a)return;
+      if(tries++<2)setTimeout(()=>{if(TA===a)attempt()},250);
+      else fallback();
+    };
+    a.onerror=fail;
+    const p=a.play();
+    if(p&&p.catch)p.catch(fail);
+  };
+  attempt();
 };
 
 const say=t=>{
@@ -454,7 +466,7 @@ $('#pr').onclick=()=>start(-1);
 $('#rst').onclick=()=>{if(confirm('למחוק את כל ההתקדמות?')){S={xp:0,streak:0,last:'',day:TD,dxp:0,m:{},h:5,ht:0,c:{}};save();home()}};
 /* LESSON */
 let L;
-const WT=[{es2he:4,he2es:2,listen:2,cloze:1},{es2he:2,he2es:3,listen:2,cloze:2,type:1},{he2es:3,listen:2,cloze:2,type:3,dict:2},{he2es:2,cloze:2,type:3,dict:3,listen:1}],ST={be:3,bh:3,bl:2,sm:3};
+const WT=[{es2he:4,he2es:2,listen:2,cloze:1},{es2he:2,he2es:3,listen:2,cloze:2},{he2es:3,listen:2,cloze:3,dict:2},{he2es:3,cloze:3,dict:3,listen:1}],ST={be:3,bh:3,bl:2,sm:3};
 const wp=o=>{const e=Object.entries(o);let r=Math.random()*e.reduce((a,x)=>a+x[1],0);for(const[k,v]of e)if((r-=v)<0)return k;return e[0][0]};
 const wtype=(w,avoid)=>{let t;for(let i=0;i<4;i++){t=wp(WT[Math.min(3,S.m[w[0]]||0)]);if(t!==avoid)break}return t};
 const wc=s=>s.split(' ').length,sayTxt=q=>q.c?q.c.t.join(' '):q.w[0];
@@ -488,7 +500,7 @@ function next(){
   $('#pb').style.width=L.done/L.tot*100+'%';$('#hr').textContent='♥ '+S.h;
   if(S.h<=0)return over();if(!L.q.length)return finish();
   const q=L.cur=L.q[0],w=q.w,sy=!!window.speechSynthesis;let t=q.t;
-  if(!sy){if(t==='listen')t='es2he';if(t==='dict')t='type';if(t==='bl')t='be'}
+  if(!sy){if(t==='listen')t='es2he';if(t==='dict')t='he2es';if(t==='bl')t='be'}
   if(t==='cloze'&&!q.c&&!(q.c=mkCloze(w)))t='he2es';
   q.t=t;q.bld=t==='be'||t==='bh'||t==='bl';q.ty=t==='type'||t==='dict';
   let h='';const spk='<button class="spk" data-s aria-label="השמעה">▶</button>',big2='<h2 class="big"><button class="spk big2" data-s aria-label="השמעה">▶</button></h2>';
@@ -536,7 +548,7 @@ $('#q').onclick=e=>{
       $$('[data-pa],[data-pb]').forEach(x=>x.classList.remove('sel'));pbtn.classList.add('sel');L.pr.a=pbtn;
       return pa?say(pa.dataset.pa):undefined}
     const A=pa?pbtn:cur,B=pa?cur:pbtn;L.pr.a=null;A.classList.remove('sel');B.classList.remove('sel');
-    if(A.dataset.pa===B.dataset.pb){A.disabled=B.disabled=true;A.classList.add('ok');B.classList.add('ok');good();say(A.dataset.pa);if(++L.pr.done===L.cur.ws.length)setTimeout(()=>grade(L.pr.err<2),500)}
+    if(A.dataset.pa===B.dataset.pb){A.disabled=B.disabled=true;A.classList.add('ok');B.classList.add('ok');good();if(++L.pr.done===L.cur.ws.length)setTimeout(()=>grade(L.pr.err<2),500)}
     else{L.pr.err++;bad();[A,B].forEach(x=>{x.classList.add('no');setTimeout(()=>x.classList.remove('no'),500)})}
     return}
   const b=g('.opt');if(b&&!b.disabled&&b.dataset.i!==undefined&&L.cur.o)return pick(+b.dataset.i);
