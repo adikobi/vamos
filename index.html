@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
+<!--
+מפת הקובץ לעריכה (ל-Claude ולכל מי שעורך): חפשו סימן עם grep -n "@@" index.html וקראו רק את הקטע הרלוונטי.
+@@CSS            עיצוב
+@@HTML-HOME / HTML-LESSON / HTML-RESULT   שלושת המסכים
+@@DATA-UNITS     מערך D: יחידה = [שם עברי, שם ספרדי, כלל, מילים, משפטים]
+@@DATA-UNITS-END הוספת יחידות חדשות: מעל שורה זו בלבד
+@@SECTIONS       כותרות מקטעים לפי אינדקס יחידה
+@@STATE, @@AUDIO, @@VOICE, @@HOME, @@LESSON, @@QUESTION-TYPES, @@GRADING, @@RESULT, @@INIT
+חשוב: EX, EX2, SEC והכוכבים השמורים (S.c) מפתחים לפי אינדקס יחידה. הוסיפו יחידות רק בסוף.
+כדי להסיר יחידה באמצע צריך להזיז את האינדקסים ולהוסיף מיגרציה, כמו הבלוק עם S.v.
+-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>¡Vamos! · ספרדית לדוברי עברית</title>
@@ -11,6 +22,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
+/* @@CSS · כל העיצוב */
 :root{--g:#F2E8D5;--t:#E7DAC0;--i:#1A1410;--a:#C8341D;--e:cubic-bezier(.2,.8,.2,1);padding-top:env(safe-area-inset-top)}
 *{box-sizing:border-box;margin:0}
 html{-webkit-text-size-adjust:100%}
@@ -142,6 +154,7 @@ button{cursor:pointer;border:0;background:none}
 </style>
 </head>
 <body>
+<!-- @@HTML-HOME · מסך הבית -->
 <main id="home" class="view on"><div class="wrap">
   <div class="top"><span class="logo" lang="es">¡Vamos!</span><span class="hs"><span id="hh"></span><span class="lv" id="lv"></span></span></div>
   <section class="hero">
@@ -170,12 +183,14 @@ button{cursor:pointer;border:0;background:none}
   <div class="mega" lang="es" aria-hidden="true">¡Vamos!</div>
 </div></main>
 
+<!-- @@HTML-LESSON · מסך שיעור -->
 <main id="lesson" class="view" aria-live="polite"><div class="wrap">
   <div class="lt"><button class="x" id="cls" aria-label="יציאה">×</button><div class="bar"><i id="pb"></i></div><span id="hr"></span><div class="cmb" id="cmb"></div></div>
   <div class="q" id="q"></div>
 </div></main>
 <div id="fb" role="status"><div><section><h4 id="fh"></h4><p id="fp"></p></section><span class="bt"><button id="fs" aria-label="השמעה">▶</button><button id="fn">המשך</button></span></div></div>
 
+<!-- @@HTML-RESULT · מסך סיכום -->
 <main id="res" class="view"><div class="wrap">
   <p class="cap" id="rn"></p>
   <h1 class="big" id="rh" style="margin:6px 0 14px"></h1>
@@ -187,6 +202,8 @@ button{cursor:pointer;border:0;background:none}
 </div></main>
 
 <script>
+/* @@SCRIPT-START · כל הקוד והנתונים מכאן */
+/* @@DATA-UNITS · מערך היחידות. אינדקס מתחיל ב-0 */
 /* [שם עברי, שם ספרדי, כלל דקדוק, מילים es|he, משפטים es|he] */
 const D=[
 ['שלום ונימוסים','Saludos','¿Cómo estás? פנייה לא רשמית (אתה). רשמי: ¿cómo está usted?','hola|שלום;adiós|להתראות;gracias|תודה;por favor|בבקשה;buenos días|בוקר טוב;lo siento|סליחה;buenas noches|לילה טוב;buenas tardes|אחר צהריים טובים;hasta luego|להתראות בקרוב;de nada|על לא דבר;perdón|סליחה;con permiso|בהיתר','hola cómo estás|שלום מה שלומך;muchas gracias amigo|תודה רבה חבר;buenas noches señora|לילה טוב גברת;hasta luego mis amigos|להתראות חברים שלי'],
@@ -195,7 +212,6 @@ const D=[
 ['משפחה','Familia','mi/mis = שלי: mi madre, mis padres. סיומת -o לרוב זכר, -a נקבה','madre|אמא;padre|אבא;hermano|אח;hermana|אחות;abuelo|סבא;hijo|בן;tío|דוד;tía|דודה;abuela|סבתא;hija|בת;primo|בן דוד;esposo|בעל','mi madre es profesora|אמא שלי מורה;tengo una hermana|יש לי אחות;mi abuela cocina bien|סבתא שלי מבשלת טוב;mi tío vive en España|הדוד שלי גר בספרד'],
 ['שם עצם ומין','Artículos','el = זכר, la = נקבה, los/las = רבים. un/una = לא מיודע','el libro|הספר;la casa|הבית;los niños|הילדים;las mesas|השולחנות;un perro|כלב;una gata|חתולה;el gato|החתול;la mujer|האישה;el hombre|האיש;los libros|הספרים;la ciudad|העיר;un amigo|חבר','la casa es grande|הבית גדול;el perro come|הכלב אוכל;el hombre tiene un gato|לאיש יש חתול;las niñas leen los libros|הילדות קוראות את הספרים'],
 ['אוכל ושתייה','Comida','tengo hambre = אני רעב (עם tener, לא ser). me gusta = אני אוהב','agua|מים;pan|לחם;queso|גבינה;manzana|תפוח;pollo|עוף;arroz|אורז;leche|חלב;huevo|ביצה;carne|בשר;pescado|דג;fruta|פרי;sopa|מרק;café|קפה','quiero agua y pan|אני רוצה מים ולחם;me gusta el queso|אני אוהב את הגבינה;bebo café por la mañana|אני שותה קפה בבוקר;la sopa está caliente|המרק חם'],
-['להזמין במסעדה','Restaurante','quisiera = הייתי רוצה (מנומס). la cuenta = החשבון','la carta|התפריט;la cuenta|החשבון;quisiera|הייתי רוצה;una mesa|שולחן;para llevar|לקחת;delicioso|טעים;propina|טיפ;camarero|מלצר;vino|יין;postre|קינוח;plato|מנה','quisiera una mesa para dos|הייתי רוצה שולחן לשניים;la cuenta por favor|החשבון בבקשה;el camarero trae la carta|המלצר מביא את התפריט;quisiera un postre|הייתי רוצה קינוח'],
 ['פעלים בהווה','Verbos -ar','hablar: hablo, hablas, habla, hablamos, habláis, hablan. מורידים -ar ומוסיפים סיומת','hablar|לדבר;comprar|לקנות;trabajar|לעבוד;caminar|ללכת ברגל;estudiar|ללמוד;cantar|לשיר;bailar|לרקוד;llamar|להתקשר;necesitar|להזדקק;esperar|לחכות;tomar|לקחת;viajar|לטייל','yo hablo español|אני מדבר ספרדית;nosotros estudiamos mucho|אנחנו לומדים הרבה;ellos bailan mucho|הם רוקדים הרבה;espero el tren|אני מחכה לרכבת'],
 ['ser ו-estar','Ser y estar','ser = זהות ותכונה קבועה. estar = מצב זמני ומיקום','ser|להיות (קבוע);estar|להיות (מצב או מקום);soy|אני (קבוע);estoy|אני נמצא;es|הוא או היא;está|הוא נמצא;eres|אתה (קבוע);estás|אתה נמצא;somos|אנחנו (קבוע);estamos|אנחנו נמצאים;feliz|שמח;cansado|עייף','yo estoy cansado|אני עייף;ella es doctora|היא רופאה;tú eres mi amigo|אתה החבר שלי;estamos en casa|אנחנו בבית'],
 ['צבעים ותיאור','Colores','התואר בא אחרי שם העצם ומתאים לו במין וביחס למספר: casa blanca, casas blancas','rojo|אדום;azul|כחול;verde|ירוק;blanco|לבן;grande|גדול;pequeño|קטן;amarillo|צהוב;negro|שחור;naranja|כתום;bonito|יפה;nuevo|חדש;viejo|ישן','la casa es blanca|הבית לבן;tengo un coche rojo|יש לי מכונית אדומה;el coche es nuevo|המכונית חדשה;tengo una camisa negra|יש לי חולצה שחורה'],
@@ -224,10 +240,25 @@ const D=[
 ['שיחה ושפה','Conversación','no entiendo = אני לא מבין. ¿puede repetir? = אפשר לחזור על זה','entiendo|אני מבין;despacio|לאט;otra vez|שוב;no sé|אני לא יודע;inglés|אנגלית;español|ספרדית;significa|זה אומר;repetir|לחזור על','no entiendo hable más despacio|אני לא מבין דבר לאט יותר;hablo un poco de español|אני מדבר קצת ספרדית;qué significa esta palabra|מה המילה הזאת אומרת'],
 ['תיאור אנשים','Personas','ser + תואר. סיומת -o/-a משתנה, ואילו -e לא: amable, inteligente','alto|גבוה;bajo|נמוך;joven|צעיר;simpático|סימפטי;inteligente|חכם;amable|אדיב;guapo|נאה;rubio|בלונדיני','mi hermano es alto|אחי גבוה;ella es muy simpática|היא מאוד סימפטית;mis abuelos son amables|סבא וסבתא שלי אדיבים'],
 ['טבע וחיות','Naturaleza','התואר מתאים לשם העצם: la montaña alta, los ríos largos','mar|ים;montaña|הר;río|נהר;bosque|יער;flor|פרח;árbol|עץ;pájaro|ציפור;caballo|סוס','el río es largo|הנהר ארוך;vemos un pájaro en el árbol|אנחנו רואים ציפור על העץ;la montaña es muy alta|ההר גבוה מאוד'],
-['פעלים לא סדירים','Irregulares','בגוף ראשון הרבה פעלים משתנים: hago, digo, vengo, veo, sé','hacer|לעשות;decir|לומר;poder|להיות מסוגל;querer|לרצות;saber|לדעת;ver|לראות;venir|לבוא;dar|לתת','yo hago la cena|אני מכין ארוחת ערב;ella dice la verdad|היא אומרת את האמת;vengo de la playa|אני בא מהחוף']
+['פעלים לא סדירים','Irregulares','בגוף ראשון הרבה פעלים משתנים: hago, digo, vengo, veo, sé','hacer|לעשות;decir|לומר;poder|להיות מסוגל;querer|לרצות;saber|לדעת;ver|לראות;venir|לבוא;dar|לתת','yo hago la cena|אני מכין ארוחת ערב;ella dice la verdad|היא אומרת את האמת;vengo de la playa|אני בא מהחוף'],
+/* יחידות 36 ואילך: יחידות מתקדמות, יום-יומיות */
+['עבר מתמשך','Imperfecto','-aba ו--ía מתארים הרגל או רקע בעבר: hablaba, comía. שלוש חריגות: era, iba, veía','hablaba|דיברתי (בעבר מתמשך);comía|אכלתי (בהרגל);vivía|גרתי;era|הייתי (קבוע);iba|הלכתי (בהרגל);tenía|היה לי;estaba|הייתי (מצב);antes|פעם;de niño|כשהייתי ילד;cuando|כש;mientras|בזמן ש;solía|נהגתי','antes vivía en Haifa|פעם גרתי בחיפה;de niño iba a la playa|כשהייתי ילד הלכתי לחוף;mientras comía veía la tele|בזמן שאכלתי ראיתי טלוויזיה;mi abuela siempre cocinaba|סבתא שלי תמיד בישלה;era un día de lluvia|היה יום גשום'],
+['לספר סיפור','Contar algo','עבר פשוט = אירוע שקרה. עבר מתמשך = רקע ותיאור: llovía cuando salí','de repente|פתאום;entonces|אז;luego|אחר כך;al final|בסוף;por eso|בגלל זה;todavía|עדיין;ya|כבר;primero|קודם;mientras tanto|בינתיים;ocurrió|התרחש;sucedió|קרה','llovía cuando salí de casa|ירד גשם כשיצאתי מהבית;de repente sonó el teléfono|פתאום צלצל הטלפון;estaba cansado por eso me acosté|הייתי עייף ולכן הלכתי לישון;al final todo salió bien|בסוף הכול יצא בסדר;ya comimos antes|כבר אכלנו קודם'],
+['עתיד פשוט','Futuro simple','סיומות על כל הצורה: -é, -ás, -á, -emos, -án (hablaré). חריגים: tendré, haré, diré, podré','hablaré|אדבר;tendré|יהיה לי;haré|אעשה;iré|אלך;será|יהיה;podré|אוכל;vendrá|הוא יבוא;probablemente|כנראה;seguramente|בוודאי;el mes que viene|בחודש הבא;dentro de|בעוד','mañana hablaré con mi jefe|מחר אדבר עם הבוס שלי;el mes que viene tendré vacaciones|בחודש הבא תהיה לי חופשה;será difícil pero podré|זה יהיה קשה אבל אוכל;dentro de un año viviré aquí|בעוד שנה אגור כאן;probablemente vendrá tarde|כנראה הוא יבוא מאוחר'],
+['כינויי גוף','Pronombres','lo/la = אותו/אותה. me/te/le = לי/לך/לו. באים לפני הפועל: lo veo, te llamo','lo|אותו;la|אותה;los|אותם;me|אותי או לי;te|אותך או לך;le|לו או לה;nos|אותנו או לנו;les|להם;se lo digo|אני אומר לו את זה;me lo das|אתה נותן לי את זה;lo conozco|אני מכיר אותו','lo veo todos los días|אני רואה אותו כל יום;te llamo mañana|אני מתקשר אליך מחר;me lo das por favor|תיתן לי את זה בבקשה;la conozco bien|אני מכיר אותה היטב;le digo la verdad|אני אומר לו את האמת;nos ayudan mucho|הם עוזרים לנו הרבה'],
+['בקשות והוראות','Imperativo','ל"אתה" משתמשים בצורת הוא: habla, come, escribe. שלילה משנה: no hables. עם כינוי: dime','dime|תגיד לי;espera|חכה;ven|בוא;mira|תראה;escucha|תקשיב;ayúdame|עזור לי;pasa|תיכנס;no te preocupes|אל תדאג;oye|שמע;cuéntame|ספר לי;tranquilo|רגוע','dime qué pasa|תגיד לי מה קורה;espera un momento|חכה רגע;ven a mi casa|בוא אליי הביתה;no te preocupes por eso|אל תדאג בקשר לזה;cuéntame cómo fue|ספר לי איך היה;escucha esto|תקשיב לזה'],
+['נימוס ובקשות','Condicional','בקשה מנומסת: me gustaría, podrías. סיומות -ía על שורש העתיד: tendría, haría','me gustaría|הייתי רוצה;podrías|תוכל;podría|אוכל (מנומס);deberías|כדאי לך;tendría|היה לי;sería|היה;haría|הייתי עושה;me encantaría|אשמח מאוד;por si acaso|ליתר ביטחון;estaría|הייתי','me gustaría hablar contigo|הייתי רוצה לדבר איתך;podrías ayudarme un momento|תוכל לעזור לי רגע;deberías descansar más|כדאי לך לנוח יותר;me encantaría ir contigo|אשמח מאוד ללכת איתך;sería mejor mañana|עדיף מחר'],
+['רצונות והשפעה','Subjuntivo','אחרי quiero que, espero que, es importante que בא הפועל בצורה אחרת: hables, comas, vengas','quiero que|אני רוצה ש;espero que|אני מקווה ש;es importante que|חשוב ש;para que|כדי ש;ojalá|הלוואי;hables|שתדבר;comas|שתאכל;vengas|שתבוא;sepa|שידע;tenga|שיהיה לו;haga|שיעשה','quiero que vengas mañana|אני רוצה שתבוא מחר;espero que estés bien|אני מקווה שאתה בסדר;es importante que hables claro|חשוב שתדבר בבירור;te llamo para que sepas|אני מתקשר אליך כדי שתדע;ojalá tenga tiempo|הלוואי שיהיה לו זמן'],
+['תנאים ואפשרויות','Si y aunque','si + הווה: si llueve, me quedo. aunque = למרות ש. a menos que = אלא אם','si|אם;aunque|אף על פי ש;a menos que|אלא אם;siempre que|בתנאי ש;sino|אלא;así que|אז;por lo tanto|לכן;a pesar de|למרות;ya que|מאחר ש;en caso de|במקרה של','si llueve me quedo en casa|אם ירד גשם אשאר בבית;aunque estoy cansado voy|למרות שאני עייף אני הולך;iré a menos que llueva|אלך אלא אם ירד גשם;no es caro sino barato|זה לא יקר אלא זול;tengo prisa así que me voy|אני ממהר אז אני הולך;ya que estás aquí ayúdame|מאחר שאתה כאן עזור לי'],
+['כמה זמן','Duración','hace + זמן = לפני… llevo + זמן + gerundio = אני כבר זמן עושה: llevo dos años estudiando','hace|לפני (זמן);desde|מאז;durante|במשך;llevo|אני כבר (זמן);hace un año|לפני שנה;hace poco|לפני זמן קצר;desde hace|מזה;estudiando|לומד (עכשיו);trabajando|עובד (עכשיו);viviendo|גר (עכשיו);mucho tiempo|הרבה זמן','hace tres meses que vivo aquí|אני גר כאן כבר שלושה חודשים;llevo dos años estudiando español|אני לומד ספרדית כבר שנתיים;estoy trabajando ahora|אני עובד עכשיו;lo vi hace poco|ראיתי אותו לא מזמן;durante la semana trabajo mucho|במהלך השבוע אני עובד הרבה;desde ayer estoy enfermo|מאתמול אני חולה'],
+['ספרדית של רחוב','Coloquial','ביטויי שיחה יומיומיים. vale נפוץ בספרד, ובאמריקה הלטינית אומרים bueno או claro','vale|בסדר (בספרד);ni idea|אין לי מושג;qué pena|איזה חבל;no pasa nada|לא נורא;qué guay|איזה כיף;estoy hecho polvo|אני מרוסק;me da igual|לי זה לא משנה;menos mal|טוב ש;a ver|בוא נראה;en serio|ברצינות;ya veremos|נראה בהמשך','vale quedamos a las ocho|בסדר נפגש בשמונה;ni idea dónde está|אין לי מושג איפה זה;no pasa nada no te preocupes|לא נורא אל תדאג;estoy hecho polvo hoy|אני מרוסק היום;me da igual lo que hagamos|לי לא משנה מה נעשה;menos mal que llegaste|טוב שהגעת'],
+['חברים וקשרים','Relaciones','echar de menos = להתגעגע. quedar con = להיפגש עם. tener ganas de + פועל','quedar con|להיפגש עם;echar de menos|להתגעגע;llevarse bien|להסתדר טוב;tener ganas de|לרצות;confiar en|לסמוך על;discutir|להתווכח;perdonar|לסלוח;invitar|להזמין;amistad|ידידות;vecino|שכן','quedo con mis amigos hoy|אני נפגש עם החברים שלי היום;te echo de menos|אני מתגעגע אליך;me llevo bien con mi vecino|אני מסתדר טוב עם השכן שלי;tengo ganas de verte|יש לי חשק לראות אותך;confío en ti|אני סומך עליך;no quiero discutir contigo|אני לא רוצה להתווכח איתך'],
+['בית וכסף','Vida práctica','me hace falta = אני צריך (חסר לי). gastar = להוציא כסף. ahorrar = לחסוך','alquiler|שכר דירה;factura|חשבון תשלום;ahorrar|לחסוך;gastar|להוציא כסף;deuda|חוב;cuenta|חשבון בנק;mudarse|לעבור דירה;reparar|לתקן;me hace falta|חסר לי;transferencia|העברה בנקאית;presupuesto|תקציב','pago el alquiler el primero|אני משלם שכר דירה בראשון;tengo que ahorrar más|אני חייב לחסוך יותר;me hace falta una cuenta nueva|אני צריך חשבון חדש;gasto mucho en comida|אני מוציא הרבה על אוכל;hago una transferencia hoy|אני עושה העברה היום;nos mudamos el mes que viene|אנחנו עוברים דירה בחודש הבא'],
+['דעות ונושאים','Sociedad','להסביר עמדה: en mi opinión, por un lado… por otro lado…','en mi opinión|לדעתי;por un lado|מצד אחד;por otro lado|מצד שני;sociedad|חברה;gobierno|ממשלה;noticia|חדשה;derecho|זכות;medioambiente|סביבה;desarrollo|התפתחות;opinar|להביע דעה;tema|נושא','en mi opinión es un buen plan|לדעתי זו תוכנית טובה;por un lado es caro por otro lado es útil|מצד אחד זה יקר ומצד שני שימושי;leo las noticias cada mañana|אני קורא חדשות כל בוקר;es un tema muy importante|זה נושא חשוב מאוד;cada persona tiene derechos|לכל אדם יש זכויות']
+/* @@DATA-UNITS-END · הוסיפו יחידות חדשות מעל שורה זו, תמיד בסוף (ראו מפת הסימנים בראש הקובץ) */
 ];
 const U=D.map(([n,e,t,w,s])=>({n,e,t,w:w.split(';').map(x=>x.split('|')),s:s.split(';').map(x=>x.split('|'))}));
-const EX={0: ['bienvenido|ברוך הבא;hasta mañana|להתראות מחר;felicidades|מזל טוב;salud|לבריאות;encantado|שמח להכיר', 'buenos días cómo está usted|בוקר טוב מה שלומך אדוני;hasta mañana mis amigos|להתראות מחר חברים;muchas gracias por todo|תודה רבה על הכול'], 1: ['nombre|שם;país|מדינה;casado|נשוי;soltero|רווק;edad|גיל', 'mi nombre es Ana|השם שלי הוא אנה;soy soltero y vivo en Tel Aviv|אני רווק וגר בתל אביב;ella es de México|היא ממקסיקו'], 2: ['once|אחד עשר;doce|שנים עשר;quince|חמש עשרה;treinta|שלושים;cincuenta|חמישים', 'tengo doce años|יש לי שתים עשרה שנה;son las tres y media|השעה שלוש וחצי;cuesta cincuenta euros|זה עולה חמישים יורו'], 3: ['nieto|נכד;suegra|חמות;sobrino|אחיין;gemelo|תאום;familia|משפחה', 'mi familia es grande|המשפחה שלי גדולה;mi sobrino tiene cinco años|האחיין שלי בן חמש;mis abuelos viven aquí|סבא וסבתא שלי גרים כאן'], 4: ['la niña|הילדה;el niño|הילד;la flor|הפרח;unos amigos|כמה חברים;las casas|הבתים', 'el niño tiene un perro|לילד יש כלב;la mujer lee un libro|האישה קוראת ספר;las casas son grandes|הבתים גדולים'], 5: ['tomate|עגבנייה;ensalada|סלט;azúcar|סוכר;té|תה;jugo|מיץ', 'quiero una ensalada|אני רוצה סלט;el té está frío|התה קר;me gusta el pescado con arroz|אני אוהב דג עם אורז'], 6: ['reserva|הזמנה;cerveza|בירה;tenedor|מזלג;cuchillo|סכין;vaso|כוס', 'tengo una reserva|יש לי הזמנה;quisiera una cerveza|הייתי רוצה בירה;el vaso está sucio|הכוס מלוכלכת'], 7: ['lavar|לשטוף;ayudar|לעזור;limpiar|לנקות;preguntar|לשאול;mirar|להסתכל', 'ella lava los platos|היא שוטפת את הכלים;ayudo a mi madre|אני עוזר לאמא שלי;ellos miran la televisión|הם מסתכלים בטלוויזיה'], 8: ['ocupado|עסוק;listo|מוכן;ausente|נעדר;lleno|מלא;vacío|ריק', 'estoy muy ocupado|אני מאוד עסוק;la sala está llena|האולם מלא;ellos están listos|הם מוכנים'], 9: ['gris|אפור;morado|סגול;rosa|ורוד;marrón|חום [צבע];dorado|מוזהב', 'el cielo es azul|השמיים כחולים;mi gato es gris|החתול שלי אפור;tengo una flor rosa|יש לי פרח ורוד'], 10: ['este|מזרח;oeste|מערב;enfrente|מול;detrás|מאחור;al lado|ליד', 'el banco está enfrente|הבנק נמצא מול;la farmacia está al lado|בית המרקחת נמצא ליד;el museo está detrás de la plaza|המוזיאון נמצא מאחורי הכיכר'], 11: ['equipaje|כבודה;turista|תייר;taxi|מונית;entrada|כרטיס כניסה;puerta de embarque|שער עלייה', 'necesito un taxi|אני צריך מונית;el turista busca el hotel|התייר מחפש את המלון;mi equipaje es pesado|הכבודה שלי כבדה']};
+const EX={0: ['bienvenido|ברוך הבא;hasta mañana|להתראות מחר;felicidades|מזל טוב;salud|לבריאות;encantado|שמח להכיר', 'buenos días cómo está usted|בוקר טוב מה שלומך אדוני;hasta mañana mis amigos|להתראות מחר חברים;muchas gracias por todo|תודה רבה על הכול'], 1: ['nombre|שם;país|מדינה;casado|נשוי;soltero|רווק;edad|גיל', 'mi nombre es Ana|השם שלי הוא אנה;soy soltero y vivo en Tel Aviv|אני רווק וגר בתל אביב;ella es de México|היא ממקסיקו'], 2: ['once|אחד עשר;doce|שנים עשר;quince|חמש עשרה;treinta|שלושים;cincuenta|חמישים', 'tengo doce años|יש לי שתים עשרה שנה;son las tres y media|השעה שלוש וחצי;cuesta cincuenta euros|זה עולה חמישים יורו'], 3: ['nieto|נכד;suegra|חמות;sobrino|אחיין;gemelo|תאום;familia|משפחה', 'mi familia es grande|המשפחה שלי גדולה;mi sobrino tiene cinco años|האחיין שלי בן חמש;mis abuelos viven aquí|סבא וסבתא שלי גרים כאן'], 4: ['la niña|הילדה;el niño|הילד;la flor|הפרח;unos amigos|כמה חברים;las casas|הבתים', 'el niño tiene un perro|לילד יש כלב;la mujer lee un libro|האישה קוראת ספר;las casas son grandes|הבתים גדולים'], 5: ['tomate|עגבנייה;ensalada|סלט;azúcar|סוכר;té|תה;jugo|מיץ', 'quiero una ensalada|אני רוצה סלט;el té está frío|התה קר;me gusta el pescado con arroz|אני אוהב דג עם אורז'], 6: ['lavar|לשטוף;ayudar|לעזור;limpiar|לנקות;preguntar|לשאול;mirar|להסתכל', 'ella lava los platos|היא שוטפת את הכלים;ayudo a mi madre|אני עוזר לאמא שלי;ellos miran la televisión|הם מסתכלים בטלוויזיה'], 7: ['ocupado|עסוק;listo|מוכן;ausente|נעדר;lleno|מלא;vacío|ריק', 'estoy muy ocupado|אני מאוד עסוק;la sala está llena|האולם מלא;ellos están listos|הם מוכנים'], 8: ['gris|אפור;morado|סגול;rosa|ורוד;marrón|חום [צבע];dorado|מוזהב', 'el cielo es azul|השמיים כחולים;mi gato es gris|החתול שלי אפור;tengo una flor rosa|יש לי פרח ורוד'], 9: ['este|מזרח;oeste|מערב;enfrente|מול;detrás|מאחור;al lado|ליד', 'el banco está enfrente|הבנק נמצא מול;la farmacia está al lado|בית המרקחת נמצא ליד;el museo está detrás de la plaza|המוזיאון נמצא מאחורי הכיכר'], 10: ['equipaje|כבודה;turista|תייר;taxi|מונית;entrada|כרטיס כניסה;puerta de embarque|שער עלייה', 'necesito un taxi|אני צריך מונית;el turista busca el hotel|התייר מחפש את המלון;mi equipaje es pesado|הכבודה שלי כבדה']};
 Object.entries(EX).forEach(([i,[w,s]])=>{const u=U[i];u.w.push(...w.split(";").map(x=>x.split("|")));u.s.push(...s.split(";").map(x=>x.split("|")))});
 const EX2=[
 ['qué tal|מה נשמע;nos vemos|נתראה;igualmente|גם לך;hasta pronto|להתראות בקרוב מאוד','qué tal amigo|מה נשמע חבר;nos vemos mañana|נתראה מחר;igualmente señor|גם לך אדוני'],
@@ -236,7 +267,6 @@ const EX2=[
 ['padres|הורים;esposa|אישה (בת זוג);nieta|נכדה;cuñado|גיס','mis padres viven en Haifa|ההורים שלי גרים בחיפה;mi esposa es doctora|אשתי רופאה;mi cuñado es alto|הגיס שלי גבוה'],
 ['el problema|הבעיה;la noche|הלילה;el agua|המים;el día|היום (יום)','el agua está fría|המים קרים;la noche es larga|הלילה ארוך;el problema es grande|הבעיה גדולה'],
 ['cena|ארוחת ערב;almuerzo|ארוחת צהריים;verdura|ירקות;chocolate|שוקולד;helado|גלידה','la cena está lista|ארוחת הערב מוכנה;me gusta el helado de chocolate|אני אוהב גלידת שוקולד;comemos verdura hoy|אנחנו אוכלים ירקות היום'],
-['sabroso|טעים;pedir|להזמין;servilleta|מפית;menú del día|תפריט היום','quiero pedir una sopa|אני רוצה להזמין מרק;la servilleta está en la mesa|המפית על השולחן;el pollo está sabroso|העוף טעים'],
 ['escuchar|להקשיב;usar|להשתמש;ganar|להרוויח;buscar|לחפש;lavar la ropa|לכבס','escucho música en casa|אני מקשיב למוזיקה בבית;busco mis llaves|אני מחפש את המפתחות;ella gana mucho|היא מרוויחה הרבה'],
 ['abierto|פתוח;cerrado|סגור;limpio|נקי;sucio|מלוכלך;tranquilo|רגוע','la tienda está abierta|החנות פתוחה;la mesa está limpia|השולחן נקי;estoy muy tranquilo|אני מאוד רגוע'],
 ['oscuro|כהה;largo|ארוך;corto|קצר;ancho|רחב','el pelo es largo|השיער ארוך;la falda es corta|החצאית קצרה;la calle es ancha|הרחוב רחב'],
@@ -271,15 +301,21 @@ EX2.forEach(([w,s],i)=>{const u=U[i];if(!u)return;
   w.split(';').map(x=>x.split('|')).filter(x=>!u.w.some(y=>y[0]===x[0])).forEach(x=>u.w.push(x));
   s.split(';').map(x=>x.split('|')).filter(x=>!u.s.some(y=>y[0]===x[0])).forEach(x=>u.s.push(x))});
 U.forEach((u,i)=>{u.w.forEach(x=>x[2]=i);u.s.forEach(x=>x[2]=i)});
+/* @@UNIT-INDEX · בניית מאגרי מילים ומשפטים */
 const AW=U.flatMap(u=>u.w),AS=U.flatMap(u=>u.s),PR={n:'תרגול חכם',e:'Repaso',t:'חזרה על המילים שפחות שולטים בהן',w:[],s:[]},UU=()=>L.u<0?PR:U[L.u];
-const SEC={0:'יסודות',5:'חיי היומיום',10:'מסע ושטח',14:'בונים שפה',18:'חיים אמיתיים',24:'עבודה ופנאי',28:'עיר ואנשים',32:'שפה מתקדמת'};
+/* @@SECTIONS · כותרות מקטעים (המפתח = מספר יחידה מ-0) */
+const SEC={0:'יסודות',5:'חיי היומיום',9:'לזוז ולהסתדר',13:'בונים שפה',17:'חיים אמיתיים',23:'עבודה ופנאי',27:'עיר ואנשים',31:'שפה מתקדמת',35:'זמנים מתקדמים',38:'דקדוק מתקדם',44:'ספרדית אמיתית'};
+/* @@BADGES · תגי רמה לפי XP */
 const BG=[[1,'Novato'],[2,'Curioso'],[3,'Viajero'],[5,'Hablante'],[8,'Fluido'],[12,'Maestro'],[16,'Experto'],[20,'Leyenda']];
+/* @@CONFIG · יעד יומי, מפתח שמירה, סוגי שאלות */
 const GOAL=50,R=9e5,K='vamos.v2',T=['es2he','he2es','listen','cloze'];
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
 const ds=d=>d.toLocaleDateString('sv'),TD=ds(new Date()),YD=ds(new Date(Date.now()-864e5)),now=()=>Date.now();
+/* @@STATE · שמירה וטעינה (localStorage) */
 let S={};try{S=JSON.parse(localStorage[K])||{}}catch(e){}
 S=Object.assign({xp:0,streak:0,last:'',day:'',dxp:0,m:{},h:5,ht:0,c:{}},S);
+if(!S.v){const c={};for(const k in S.c){const n=+k;if(n<6)c[n]=S.c[k];else if(n>6)c[n-1]=S.c[k]}S.c=c;S.v=2}/* מעבר חד-פעמי: יחידת המסעדה הוסרה */
 if(S.day!==TD){S.day=TD;S.dxp=0}
 if(S.last&&S.last!==TD&&S.last!==YD)S.streak=0;
 const save=()=>{try{localStorage[K]=JSON.stringify(S)}catch(e){}};
@@ -289,10 +325,12 @@ const fm=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return(s/60|0)+':'+String(s
 function regen(){if(S.h<5){const n=Math.floor((now()-S.ht)/R);if(n>0){S.h=Math.min(5,S.h+n);S.ht=S.h>=5?0:S.ht+n*R;save()}}else S.ht=0}
 const hl=()=>'♥ '+S.h+(S.h<5?' · '+fm(S.ht+R-now()):'');
 setInterval(()=>{ $('#hh').textContent='♥ '+S.h; $('#hr').textContent='♥ '+S.h; }, 1000);
+/* @@AUDIO · צלילי אפקט */
 let AC;const beep=(f,d=.12,t='sine')=>{try{if(SP.fx===0)return;AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.12,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}};
 const good=()=>{beep(660,.1);setTimeout(()=>beep(880,.16),90)},bad=()=>beep(170,.28,'sawtooth');
 
 /* === מערכת קולות משודרגת ותומכת iOS === */
+/* @@VOICE · הקראה וקולות */
 let TA,VO=null,SP={},lastVCount=-1,unlocked=false;
 try{SP=JSON.parse(localStorage['vamos.snd'])||{}}catch(e){}
 const saveSP=()=>{try{localStorage['vamos.snd']=JSON.stringify(SP)}catch(e){}};
@@ -437,7 +475,7 @@ function voiceUI(){
 const count=(el,to,ms=900,sf='')=>{const t0=performance.now();(function f(n){const p=Math.min((n-t0)/ms,1);el.textContent=Math.round(to*(1-Math.pow(1-p,3)))+sf;if(p<1)requestAnimationFrame(f)})(t0)};
 const lvl=x=>Math.floor(x/100)+1,bn=l=>BG.filter(b=>b[0]<=l).pop()[1];
 const pct=u=>Math.min(100,Math.round(u.w.reduce((a,w)=>a+(S.m[w[0]]||0),0)/(Math.min(u.w.length,12)*3)*100));
-/* HOME */
+/* @@HOME · מסך הבית ורשימת היחידות */
 function home(){
   regen();view('home');const lv=lvl(S.xp),cur=U.findIndex((u,i)=>!S.c[i]);
   $('#lv').textContent='רמה '+lv;$('#hh').textContent=hl();
@@ -463,8 +501,8 @@ $('#vt').onclick=()=>{
 $('#vm').onchange=e=>{SP.fx=+e.target.value;saveSP();good()};
 $('#units').onclick=e=>{const r=e.target.closest('.row');if(r&&!r.disabled)start(+r.dataset.i)};
 $('#pr').onclick=()=>start(-1);
-$('#rst').onclick=()=>{if(confirm('למחוק את כל ההתקדמות?')){S={xp:0,streak:0,last:'',day:TD,dxp:0,m:{},h:5,ht:0,c:{}};save();home()}};
-/* LESSON */
+$('#rst').onclick=()=>{if(confirm('למחוק את כל ההתקדמות?')){S={xp:0,streak:0,last:'',day:TD,dxp:0,m:{},h:5,ht:0,c:{},v:2};save();home()}};
+/* @@LESSON · מנוע השיעור */
 let L;
 const WT=[{es2he:4,he2es:2,listen:2,cloze:1},{es2he:2,he2es:3,listen:2,cloze:2},{he2es:3,listen:2,cloze:3,dict:2},{he2es:3,cloze:3,dict:3,listen:1}],ST={be:3,bh:3,bl:2,sm:3};
 const wp=o=>{const e=Object.entries(o);let r=Math.random()*e.reduce((a,x)=>a+x[1],0);for(const[k,v]of e)if((r-=v)<0)return k;return e[0][0]};
@@ -495,6 +533,7 @@ function start(i){
   el.innerHTML=`<p class="cap" lang="es">${u.e}</p><h2 class="big sm">${u.n}</h2><p class="rule">${u.t}</p><p class="cap">מילים בשיעור · לחצו לשמיעה</p><div class="chips">${pw.map(w=>`<button class="chip" data-say="${w[0]}"><bdi lang="es">${w[0]}</bdi><small>${w[1]}</small></button>`).join('')}</div><button class="sub" id="go">מתחילים</button>`;
 }
 function go(){L.intro=0;next()}
+/* @@QUESTION-TYPES · בניית שאלה */
 function next(){
   regen();$('#fb').className='';L.lock=false;L.hn=0;L.sp=0;
   $('#pb').style.width=L.done/L.tot*100+'%';$('#hr').textContent='♥ '+S.h;
@@ -575,6 +614,7 @@ function reveal(){const q=L.cur,w=q.w;
   else if(q.ty){const i=$('#ti');i.value=w[0];i.readOnly=true}
   else $$('.opt').forEach((b,k)=>{b.disabled=true;if(q.o[k][0]===w[0])b.classList.add('ok')});
   grade(0,1)}
+/* @@GRADING · בדיקת תשובה ו-XP */
 function grade(ok,sk){
   L.lock=true;const q=L.q.shift(),w=q.w,k=w[0],fb=$('#fb'),first=!L.seen.has(k);L.last=k;
   $('.hl').style.display='none';say(k);
@@ -603,7 +643,7 @@ addEventListener('keydown',e=>{
   if(e.key==='Enter'){e.preventDefault();L.lock?next():check()}
   else if(!L.lock&&/^[1-4]$/.test(e.key)){const q=L.cur;if(q&&q.o&&q.o[e.key-1]&&!$$('.opt')[e.key-1].disabled)pick(+e.key-1)}
 });
-/* RESULT */
+/* @@RESULT · סיכום שיעור */
 function finish(){
   const p=Math.round(L.ok/L.tot*100),bonus=p===100?20:0,old=S.c[L.u]||0,lv0=lvl(S.xp),d0=S.dxp;L.xp+=bonus;
   S.xp+=L.xp;S.dxp+=L.xp;S.h=5;S.ht=0;
@@ -646,6 +686,7 @@ function confetti(n){
   const P=Array.from({length:n*35},()=>({x:c.width/2,y:c.height*.35,vx:(Math.random()-.5)*16,vy:-Math.random()*14-4,s:6+Math.random()*10,r:Math.random()*6,c:Math.random()<.5?'#C8341D':'#1A1410'}));
   let f=0;(function d(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});if(++f<130)requestAnimationFrame(d);else x.clearRect(0,0,c.width,c.height)})();
 }
+/* @@INIT · הפעלה */
 home();
 </script>
 </body>
