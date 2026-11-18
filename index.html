@@ -688,6 +688,14 @@ function confetti(n){
 }
 /* @@INIT · הפעלה */
 home();
+/* גלילה אוטומטית ליחידה הנוכחית בפתיחת האפליקציה, רק אם כבר יש התקדמות */
+(function(){
+  if(!Object.keys(S.c||{}).length)return;
+  const go=()=>{const rows=document.querySelectorAll('#units .row');
+    const t=document.querySelector('#units .row.cur')||rows[rows.length-1];
+    if(t)t.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})};
+  requestAnimationFrame(()=>setTimeout(go,250));
+})();
 </script>
 </body>
 </html>
